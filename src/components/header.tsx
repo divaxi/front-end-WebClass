@@ -1,0 +1,76 @@
+import {
+  AppBar,
+  Avatar,
+  IconButton,
+  Toolbar,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import styled from "@emotion/styled";
+
+const StyledAppBar = styled(AppBar)`
+  background-color: white;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledToolbar = styled(Toolbar)`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const MenuButton = styled(IconButton)`
+  margin-right: 0.5rem;
+`;
+
+const FlexSpacer = styled.div`
+  flex: 1;
+`;
+
+const UserSection = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+const Header = ({ onMenuClick }: HeaderProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  return (
+    <StyledAppBar position="fixed">
+      <StyledToolbar>
+        {isMobile && (
+          <MenuButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={onMenuClick}
+          >
+            <MenuIcon />
+          </MenuButton>
+        )}
+        <FlexSpacer />
+        <UserSection>
+          <StyledAvatar
+            alt="User Avatar"
+            src="/path-to-avatar.jpg"
+          />
+        </UserSection>
+      </StyledToolbar>
+    </StyledAppBar>
+  );
+};
+
+export default Header;
