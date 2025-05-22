@@ -2,24 +2,27 @@ import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { Box, Button, IconButton, Paper } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
+import type { Customer } from "@/type";
+import { useAtom } from "jotai";
+import { customerState } from "@/state";
+import { consumeSlots } from "@mui/x-charts/internals";
 
-interface Customer {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  createdAt: string;
-}
 
 interface CustomerTableProps {
   customers: Customer[];
   loading?: boolean;
 }
 
+
+
+export const CustomerTable = ({
+  customers,
+  loading = false,
+}: CustomerTableProps) => {
+  const [customer, setCustomer] = useAtom(customerState);
 const columns: GridColDef[] = [
   {
     field: "id",
@@ -88,10 +91,14 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       return (
         <Box display="flex" justifyContent="center" alignItems="center">
-          <IconButton>
+          <IconButton onClick={() => {
+            setCustomer(customer.map((item) => item.id === params.row.id ? params.row : item));
+          }}>
             <EditOutlinedIcon sx={{ color: "primary.main" }} />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => {
+            setCustomer(customer.filter((item) => item.id !== params.row.id));
+          }}>
             <DeleteOutlineOutlinedIcon sx={{ color: "error.main" }} />
           </IconButton>
         </Box>
@@ -99,11 +106,6 @@ const columns: GridColDef[] = [
     },
   },
 ];
-
-export const CustomerTable = ({
-  customers,
-  loading = false,
-}: CustomerTableProps) => {
   return (
     <DataGrid
       scrollbarSize={1}

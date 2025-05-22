@@ -95,7 +95,7 @@ const theme = createTheme({
     MuiDataGrid: {
       styleOverrides: {
         root: {
-          height: "80vh",
+          height: "75vh",
           backgroundColor: "white",
           border: "1px solid rgb(216, 216, 226)",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",

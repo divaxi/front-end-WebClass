@@ -1,8 +1,9 @@
 import { CustomerTable } from "@/components/table/customer-table";
 import { Paper } from "@mui/material";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { FilterBar } from "@/components/table/customer-filter-bar";
-
+import { useAtom, useAtomValue } from "jotai";
+import { customerState } from "@/state";
 export default function CustomerPage() {
   const [filters, setFilters] = useState({
     name: "",
@@ -10,7 +11,7 @@ export default function CustomerPage() {
     address: "",
   });
 
-  const customers = [
+  const data = [
     {
       id: 1,
       name: "John Doe",
@@ -133,16 +134,11 @@ export default function CustomerPage() {
     },
   ];
 
-  const filteredCustomers = useMemo(() => {
-    return customers.filter((customer) => {
-      return (
-        customer.name.toLowerCase().includes(filters.name.toLowerCase()) &&
-        customer.phone.toLowerCase().includes(filters.phone.toLowerCase()) &&
-        customer.address.toLowerCase().includes(filters.address.toLowerCase())
-      );
-    });
-  }, [customers, filters]);
+  const [customers, setCustomers] = useAtom(customerState);
 
+  useEffect(() => {
+    setCustomers(data);
+  }, []);
   const handleFilterChange =
     (field: keyof typeof filters) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,7 +151,7 @@ export default function CustomerPage() {
   return (
     <Paper sx={{ p: 2 }}>
       <FilterBar filters={filters} onFilterChange={handleFilterChange} />
-      <CustomerTable customers={filteredCustomers} />
+      <CustomerTable customers={customers} />
     </Paper>
   );
 }
