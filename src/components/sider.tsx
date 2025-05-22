@@ -16,7 +16,8 @@ import styled from "@emotion/styled";
 import { animated, useSpring } from "@react-spring/web";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-  
+// @ts-ignores
+import AppIcon from "@/assets/AppIcon.svg?react";
 const DRAWER_WIDTH = 240;
 
 const StyledDrawer = styled(Drawer)`
@@ -25,13 +26,14 @@ const StyledDrawer = styled(Drawer)`
   & .MuiDrawer-paper {
     width: ${DRAWER_WIDTH}px;
     box-sizing: border-box;
+    border-radius: 0;
   }
 `;
 
 const DrawerContent = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 `;
 
@@ -42,12 +44,12 @@ const Logo = styled.img`
   padding: 24px 0px 8px 24px;
 `;
 
-const StyledListItem = styled(ListItem)`
-  cursor: pointer;
-  &:hover {
-    background-color: rgba(230,244,255,255);
-  }
-`;
+// const StyledListItem = styled(ListItem)`
+//   cursor: pointer;
+//   &:hover {
+//     background-color: rgba(230, 244, 255, 255);
+//   }
+// `;
 
 const AnimatedDrawer = styled(animated.div)`
   z-index: 20;
@@ -60,7 +62,6 @@ interface SiderProps {
 }
 
 const menuItems = [
-
   { text: "Thống kê", icon: <DashboardIcon />, path: "/" },
   { text: "Khách hàng", icon: <PeopleIcon />, path: "/customers" },
   { text: "Đơn hàng", icon: <ReceiptIcon />, path: "/orders" },
@@ -75,38 +76,47 @@ const Sider = ({ open, onClose, location }: SiderProps) => {
     if (!isMobile) {
       onClose();
     }
-  }, [isMobile]);
+  }, [isMobile, onClose]);
 
   const drawerSpring = useSpring({
     transform: !isMobile ? "translateX(0)" : "translateX(-100%)",
     config: {
       tension: 300,
-      friction: 30
-    }
+      friction: 30,
+    },
   });
 
   const drawer = (
     <DrawerContent>
-      <Logo src="/logo.svg" alt="Logo" />
+      <AppIcon width={40} height={40} style={{ margin: "1rem" }} />
       <List>
         {menuItems.map((item) => (
-          <StyledListItem
+          <ListItem
             key={item.text}
             onClick={() => {
               navigate(item.path);
+
               if (isMobile) onClose();
             }}
             sx={{
-              backgroundColor: location === item.path ? "rgba(230,244,255,255)" : "transparent",
+              backgroundColor:
+                location === item.path
+                  ? "rgba(230,244,255,255)"
+                  : "transparent",
               color: location === item.path ? "rgb(22, 119, 255)" : "inherit",
-              borderRight: location === item.path ? "4px solid rgb(22, 119, 255)" : "none"
+              borderRight:
+                location === item.path ? "4px solid rgb(22, 119, 255)" : "none",
             }}
           >
-            <ListItemIcon sx={{
-              color: location === item.path ? "rgb(22, 119, 255)" : "inherit"
-            }}>{item.icon}</ListItemIcon>
+            <ListItemIcon
+              sx={{
+                color: location === item.path ? "rgb(22, 119, 255)" : "inherit",
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
             <ListItemText primary={item.text} />
-          </StyledListItem>
+          </ListItem>
         ))}
       </List>
     </DrawerContent>
@@ -127,9 +137,7 @@ const Sider = ({ open, onClose, location }: SiderProps) => {
         </Drawer>
       ) : (
         <AnimatedDrawer style={drawerSpring}>
-          <StyledDrawer variant="permanent">
-            {drawer}
-          </StyledDrawer>
+          <StyledDrawer variant="permanent">{drawer}</StyledDrawer>
         </AnimatedDrawer>
       )}
     </>

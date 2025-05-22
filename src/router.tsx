@@ -1,16 +1,49 @@
-import { Home } from "@mui/icons-material";
 import Layout from "./layout";
 import { createBrowserRouter } from "react-router-dom";
+import DasboardPage from "./pages/DasboardPage";
+import CustomerPage from "./pages/CustomerPage";
+import OrderPage from "./pages/OrderPage";
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <DasboardPage />,
+        handle: {
+          crumb: "Trang chủ",
+        },
+      },
+      {
+        path: "/customers",
+        element: <CustomerPage />,
+        handle: {
+          crumb: "Khách hàng",
+        },
+      },
+      {
+        path: "/orders",
+        element: <OrderPage />,
+        handle: {
+          crumb: "Đơn hàng",
+        },
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "*",
+    element: <div>Not Found</div>,
   },
 ]);

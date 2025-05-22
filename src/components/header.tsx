@@ -9,12 +9,6 @@ import {
 import { Menu as MenuIcon } from "@mui/icons-material";
 import styled from "@emotion/styled";
 
-const StyledAppBar = styled(AppBar)`
-  background-color: white;
-  color: #333;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
 const StyledToolbar = styled(Toolbar)`
   display: flex;
   justify-content: space-between;
@@ -49,7 +43,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <StyledAppBar position="fixed">
+    <AppBar position="fixed">
       <StyledToolbar>
         {isMobile && (
           <MenuButton
@@ -63,13 +57,10 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         )}
         <FlexSpacer />
         <UserSection>
-          <StyledAvatar
-            alt="User Avatar"
-            src="/path-to-avatar.jpg"
-          />
+          <StyledAvatar alt="User Avatar" src="/path-to-avatar.jpg" />
         </UserSection>
       </StyledToolbar>
-    </StyledAppBar>
+    </AppBar>
   );
 };
 
