@@ -27,10 +27,8 @@ export default function Layout() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
         overflow: "hidden",
+        display: "flex",
         backgroundColor: "#f7f7f8",
       }}
     >
@@ -44,6 +42,7 @@ export default function Layout() {
           flex: 1,
           display: "flex",
           flexDirection: "column",
+          width: "100%",
         }}
       >
         <div
@@ -65,22 +64,21 @@ export default function Layout() {
           }}
         >
           <LoadingSpinner />
-          <Suspense>
-            <Breadcrumbs>
-              {crumbs.map((crumb, index) => (
-                <Typography key={index}>{crumb} </Typography>
-              ))}
-            </Breadcrumbs>
-            <Box
-              sx={{
-                height: "100%",
-                overflow: "hidden",
-                alignContent: "center",
-              }}
-            >
-              <Outlet />
-            </Box>
-          </Suspense>
+          <Breadcrumbs>
+            {crumbs.map((crumb, index) => (
+              <Typography key={index}>{crumb} </Typography>
+            ))}
+          </Breadcrumbs>
+          <Box
+            sx={{
+              height: "100%",
+              width: "100%",
+              overflow: "auto",
+              alignContent: "center",
+            }}
+          >
+            <Outlet />
+          </Box>
         </Box>
       </div>
       <ToastContainer />
