@@ -1,8 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "@/components/header";
 import Sider from "@/components/sider";
-import { Suspense, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { useState } from "react";
+import { Bounce, ToastContainer } from "react-toastify";
 import { Box, Breadcrumbs, Typography } from "@mui/material";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { useMatches } from "react-router-dom";
@@ -81,7 +81,17 @@ export default function Layout() {
           </Box>
         </Box>
       </div>
-      <ToastContainer />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        draggable
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 }

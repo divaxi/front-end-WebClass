@@ -4,27 +4,28 @@ import {
   type Control,
   type FieldValues,
   type RegisterOptions,
+  type Path,
 } from "react-hook-form";
 import { TextField } from "@mui/material";
 
-interface TextAreaProps {
-  name: string;
+interface TextAreaProps<T extends FieldValues> {
+  name: Path<T>;
   label?: React.ReactNode;
-  control: Control<FieldValues>;
+  control: Control<T>;
   rules?: Omit<
-    RegisterOptions<FieldValues, string>,
+    RegisterOptions<T, Path<T>>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
   >;
   disabled?: boolean;
 }
 
-const TextArea: React.FC<TextAreaProps> = ({
+const TextAreaInputController = <T extends FieldValues>({
   name,
   label,
   control,
   rules,
   disabled,
-}) => (
+}: TextAreaProps<T>) => (
   <Controller
     name={name}
     control={control}
@@ -62,4 +63,4 @@ const TextArea: React.FC<TextAreaProps> = ({
   />
 );
 
-export default TextArea;
+export default TextAreaInputController;

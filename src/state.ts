@@ -2,7 +2,7 @@ import { atom } from "jotai";
 
 import { atomWithStorage } from "jotai/utils";
 
-import type { Customer } from "./type";
+import type { Customer, Order } from "./type";
 
 export const authState = atomWithStorage("authState", {
   isStaff: false,
@@ -12,3 +12,4 @@ export const authState = atomWithStorage("authState", {
 export const loadingState = atom<boolean>(false);
 
 export const customerState = atom<Customer[]>([]);
+export const orderState = atom<Order[]>([]);

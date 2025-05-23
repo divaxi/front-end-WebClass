@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import styled from "@emotion/styled";
-
+import { AvatarMenu } from "./avatar-menu";
 const StyledToolbar = styled(Toolbar)`
   display: flex;
   justify-content: space-between;
@@ -57,7 +57,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         )}
         <FlexSpacer />
         <UserSection>
-          <StyledAvatar alt="User Avatar" src="/path-to-avatar.jpg" />
+          <AvatarMenu userName="John Doe" userRole="Admin" onLogout={() => {}} />
         </UserSection>
       </StyledToolbar>
     </AppBar>

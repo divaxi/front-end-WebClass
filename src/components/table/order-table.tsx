@@ -1,28 +1,26 @@
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Box, IconButton } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
-import type { Customer } from "@/type";
+import type { Order } from "@/type";
 import { useAtom } from "jotai";
-import { customerState } from "@/state";
+import { orderState } from "@/state";
 import { useDialog } from "@/providers/dialog-provider";
-import { CreateCustomerDialog } from "@/components/dialog/create-update-customer-dialog";
-import { DeleteCustomerDialog } from "@/components/dialog/delete-customer-dialog";
 import { toast } from "react-toastify";
-interface CustomerTableProps {
-  customers: Customer[];
+import { DeleteOrderDialog } from "@/components/dialog/delete-order-dialog";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { ViewOrderDialog } from "@/components/dialog/view-order-dialog";
+interface OrderTableProps {
+  orders: Order[];
   loading?: boolean;
 }
 
-export const CustomerTable = ({
-  customers,
-  loading = false,
-}: CustomerTableProps) => {
-  const [customer, setCustomer] = useAtom(customerState);
+export function OrderTable({ orders, loading = false }: OrderTableProps) {
+  const [order, setOrder] = useAtom(orderState);
   const { openDialog } = useDialog();
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -33,40 +31,25 @@ export const CustomerTable = ({
       flex: 1,
     },
     {
-      field: "name",
+      field: "orderCode",
+      headerName: "Mã đơn hàng",
+      headerClassName: "header-cell",
+      flex: 1,
+    },
+    {
+      field: "customer.name",
       headerName: "Tên khách hàng",
       headerClassName: "header-cell",
       resizable: false,
       filterable: false,
       flex: 1,
+      renderCell: (params) => {
+        return params.row.customer?.name;
+      },
     },
     {
-      field: "email",
-      headerName: "Email",
-      headerClassName: "header-cell",
-      resizable: false,
-      filterable: false,
-      flex: 1,
-    },
-    {
-      field: "phone",
-      headerName: "Số điện thoại",
-      headerClassName: "header-cell",
-      resizable: false,
-      filterable: false,
-      flex: 1,
-    },
-    {
-      field: "address",
-      headerName: "Địa chỉ",
-      headerClassName: "header-cell",
-      resizable: false,
-      filterable: false,
-      flex: 1,
-    },
-    {
-      field: "createdAt",
-      headerName: "Ngày tạo",
+      field: "orderDate",
+      headerName: "Ngày đặt",
       headerClassName: "header-cell",
       resizable: false,
       filterable: false,
@@ -77,6 +60,28 @@ export const CustomerTable = ({
         } catch (error) {
           return params.value;
         }
+      },
+    },
+    {
+      field: "status",
+      headerName: "Trạng thái",
+      headerClassName: "header-cell",
+      resizable: false,
+      filterable: false,
+      flex: 1,
+    },
+    {
+      field: "total",
+      headerName: "Tổng tiền",
+      headerClassName: "header-cell",
+      resizable: false,
+      filterable: false,
+      flex: 1,
+      renderCell: (params) => {
+        return params.row.total.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
       },
     },
     {
@@ -93,39 +98,16 @@ export const CustomerTable = ({
           <Box display="flex" justifyContent="center" alignItems="center">
             <IconButton
               onClick={() => {
-                openDialog(
-                  <CreateCustomerDialog
-                    onClose={() => {}}
-                    onSubmit={(customerData) => {
-                      setCustomer(
-                        customer.map((item) =>
-                          item.id === params.row.id
-                            ? { ...item, ...customerData }
-                            : item
-                        )
-                      );
-                      toast.success("Cập nhật khách hàng thành công");
-                    }}
-                    title="Cập nhật khách hàng"
-                    initialData={params.row}
-                  />
-                );
+                openDialog(<ViewOrderDialog initialData={params.row} />);
               }}
             >
-              <EditOutlinedIcon sx={{ color: "primary.main" }} />
+              <VisibilityOutlinedIcon sx={{ color: "primary.main" }} />
             </IconButton>
             <IconButton
               onClick={() => {
-                openDialog(
-                  <DeleteCustomerDialog
-                    onClose={() => {
-                      setCustomer(
-                        customer.filter((item) => item.id !== params.row.id)
-                      );
-                      toast.success("Xóa khách hàng thành công");
-                    }}
-                  />
-                );
+                openDialog(<DeleteOrderDialog onClose={() => {}} />);
+                setOrder(order.filter((item) => item.id !== params.row.id));
+                toast.success("Xóa đơn hàng thành công");
               }}
             >
               <DeleteOutlineOutlinedIcon sx={{ color: "error.main" }} />
@@ -135,10 +117,11 @@ export const CustomerTable = ({
       },
     },
   ];
+
   return (
     <DataGrid
       scrollbarSize={1}
-      rows={customers}
+      rows={orders}
       columns={columns}
       initialState={{
         pagination: {
@@ -161,4 +144,4 @@ export const CustomerTable = ({
       }}
     />
   );
-};
+}

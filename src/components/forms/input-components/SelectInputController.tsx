@@ -5,6 +5,7 @@ import type {
   FieldValues,
   RegisterOptions,
   UseFormSetValue,
+  Path,
 } from "react-hook-form";
 import { Autocomplete, TextField } from "@mui/material";
 
@@ -13,13 +14,13 @@ interface Option {
   displayName: string;
 }
 
-interface SelectFieldProps {
-  name: string;
+interface SelectFieldProps<T extends FieldValues> {
+  name: Path<T>;
   label?: string | React.ReactNode;
-  control: Control<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
+  control: Control<T>;
+  setValue: UseFormSetValue<T>;
   rules?: Omit<
-    RegisterOptions<FieldValues, string>,
+    RegisterOptions<T, Path<T>>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
   >;
   disabled?: boolean;
@@ -28,7 +29,7 @@ interface SelectFieldProps {
   setSubLocation?: (value: Option) => void;
 }
 
-const SelectField: React.FC<SelectFieldProps> = ({
+const SelectField = <T extends FieldValues>({
   name,
   label,
   control,
@@ -38,7 +39,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   disabled,
   loading,
   setSubLocation,
-}) => {
+}: SelectFieldProps<T>) => {
   if (!control || !setValue) {
     console.error(
       "Control and setValue props are required for SelectField component"
@@ -52,7 +53,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
       control={control}
       rules={rules}
       render={({ field, fieldState: { error } }) => {
-        const currentValue = field.value || null;
+        const currentValue = field.value as Option | null;
         const selectedOption =
           options.find((opt) => opt.value === currentValue?.value) || null;
 
@@ -75,13 +76,13 @@ const SelectField: React.FC<SelectFieldProps> = ({
             options={options}
             getOptionLabel={(option: Option) => option.displayName}
             value={selectedOption || undefined}
+            disabled={disabled || loading}
             onChange={(_, newValue: Option | null) => {
-              setValue(name, newValue || null);
+              setValue(name, newValue as any);
               if (setSubLocation && newValue) {
                 setSubLocation(newValue);
               }
             }}
-            disabled={disabled || loading}
             renderInput={(params) => (
               <TextField
                 {...params}

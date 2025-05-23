@@ -1,10 +1,10 @@
 import React from "react";
 import { RouterProvider } from "react-router-dom";
-// import { useAtomValue } from "jotai";
 import { router } from "@/router";
 import { ThemeProvider } from "@emotion/react";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
+import { DialogProvider } from "@/providers/dialog-provider";
 
 const MyApp = () => {
   // const { accessToken } = useAtomValue(authState);
@@ -15,7 +15,9 @@ const MyApp = () => {
     <div>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RouterProvider router={router} />
+        <DialogProvider>
+          <RouterProvider router={router} />
+        </DialogProvider>
       </ThemeProvider>
     </div>
   );

@@ -21,9 +21,10 @@ interface TextFieldProps<T extends FieldValues> {
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   type?: string;
+  transform?: (value: string) => any;
 }
 
-const TextFieldController = <T extends FieldValues>({
+const TextInputController = <T extends FieldValues>({
   name,
   label,
   control,
@@ -32,6 +33,7 @@ const TextFieldController = <T extends FieldValues>({
   prefix,
   suffix,
   type = "text",
+  transform,
 }: TextFieldProps<T>) => (
   <Controller
     name={name}
@@ -54,7 +56,10 @@ const TextFieldController = <T extends FieldValues>({
           },
         }}
         value={field.value || ""}
-        onChange={field.onChange}
+        onChange={(e) => {
+          const value = e.target.value;
+          field.onChange(transform ? transform(value) : value);
+        }}
         label={label}
         variant="outlined"
         fullWidth
@@ -75,4 +80,4 @@ const TextFieldController = <T extends FieldValues>({
   />
 );
 
-export default TextFieldController;
+export default TextInputController;
