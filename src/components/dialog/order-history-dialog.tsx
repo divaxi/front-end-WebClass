@@ -13,109 +13,30 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import type { OrderHistory } from "@/type";
-
+import type { OrderHistory } from "@/client/api";
+import { useAtom } from "jotai";
+import { orderHistoryState } from "@/state";
+import { useOrderHistories } from "@/client/services/order-history-service";
 interface OrderHistoryDialogProps {
+  orderId: string;
   open: boolean;
   onClose: () => void;
   onUpdateStatus?: (status: string) => void;
   orderHistories?: OrderHistory[];
 }
 
-const  initialOrderHistory = [
-    {
-      id: 1,
-      order: {
-        id: 1,
-        customer: {
-          id: 1,
-          name: "Nguyễn Văn A",
-          email: "nguyenvana@example.com",
-          phone: "0123456789",
-          address: "123 Đường ABC, Quận 1, TP.HCM"
-        },
-        orderDate: "2024-03-20",
-        orderCode: "ORD001",
-        status: "Đã giao hàng",
-        total: 1500000,
-        deliveryAddress: "123 Đường ABC, Quận 1, TP.HCM",
-        items: []
-      },
-      status: "Đã giao hàng",
-      createdAt: new Date("2024-03-20T15:30:00")
-    },
-    {
-      id: 2,
-      order: {
-        id: 1,
-        customer: {
-          id: 1,
-          name: "Nguyễn Văn A",
-          email: "nguyenvana@example.com",
-          phone: "0123456789",
-          address: "123 Đường ABC, Quận 1, TP.HCM"
-        },
-        orderDate: "2024-03-20",
-        orderCode: "ORD001",
-        status: "Đang giao hàng",
-        total: 1500000,
-        deliveryAddress: "123 Đường ABC, Quận 1, TP.HCM",
-        items: []
-      },
-      status: "Đang giao hàng",
-      createdAt: new Date("2024-03-20T14:00:00")
-    },
-    {
-      id: 3,
-      order: {
-        id: 1,
-        customer: {
-          id: 1,
-          name: "Nguyễn Văn A",
-          email: "nguyenvana@example.com",
-          phone: "0123456789",
-          address: "123 Đường ABC, Quận 1, TP.HCM"
-        },
-        orderDate: "2024-03-20",
-        orderCode: "ORD001",
-        status: "Đã xác nhận",
-        total: 1500000,
-        deliveryAddress: "123 Đường ABC, Quận 1, TP.HCM",
-        items: []
-      },
-      status: "Đã xác nhận",
-      createdAt: new Date("2024-03-20T13:00:00")
-    },
-    {
-      id: 4,
-      order: {
-        id: 1,
-        customer: {
-          id: 1,
-          name: "Nguyễn Văn A",
-          email: "nguyenvana@example.com",
-          phone: "0123456789",
-          address: "123 Đường ABC, Quận 1, TP.HCM"
-        },
-        orderDate: "2024-03-20",
-        orderCode: "ORD001",
-        status: "Chờ xác nhận",
-        total: 1500000,
-        deliveryAddress: "123 Đường ABC, Quận 1, TP.HCM",
-        items: []
-      },
-      status: "Chờ xác nhận",
-      createdAt: new Date("2024-03-20T12:00:00")
-    }
-  ]
-
 const OrderHistoryDialog: React.FC<OrderHistoryDialogProps> = ({
+  orderId,
   open,
   onClose,
   orderHistories,
  
 }) => {
-  const [orderHistory, setOrderHistory] = useState<OrderHistory[]>(initialOrderHistory);
+  const {data, error} = useOrderHistories({
+    orderId: orderId,
+  })
+
+  const [orderHistory, setOrderHistory] = useAtom(orderHistoryState);
 
   const [selectedStatus, setSelectedStatus] = useState("");
 
@@ -127,10 +48,10 @@ const OrderHistoryDialog: React.FC<OrderHistoryDialogProps> = ({
     if (selectedStatus ) {
       setSelectedStatus("");
       setOrderHistory([ {
-        id: orderHistory.length + 1,
+        id: orderHistory[orderHistory.length - 1].id + 1,
         order: orderHistory[orderHistory.length - 1].order,
-        status: selectedStatus,
-        createdAt: new Date(),
+        status: selectedStatus as OrderStatusEnum,
+        createdAt: new Date().toISOString(),
       },...orderHistory]);
     }
   };

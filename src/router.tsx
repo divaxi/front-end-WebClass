@@ -4,9 +4,17 @@ import DasboardPage from "./pages/DasboardPage";
 import CustomerPage from "./pages/CustomerPage";
 import OrderPage from "./pages/OrderPage";
 import LoginPage from "./pages/LoginPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "@/components/protected-route";
 
 export const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "*",
+    element: <div>Not Found</div>,
+  },
   {
     path: "/",
     element: (
@@ -38,12 +46,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "*",
-    element: <div>Not Found</div>,
-  },
+
 ]);

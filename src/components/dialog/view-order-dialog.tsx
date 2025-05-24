@@ -2,7 +2,7 @@ import React from "react";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import OrderDetail from "@/components/order-detail";
 import { useDialog } from "@/providers/dialog-provider";
-import type { Order } from "@/type";
+import type { Order } from "@/client/api";
 
 interface ViewOrderDialogProps {
   isLoading?: boolean;

@@ -44,7 +44,7 @@ export default function PieChartSection() {
   return (
     <Grid size={{ md: 12, lg: 5 }} width={"100%"}>
       <Paper sx={{ p: 2, height: "100%" }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
+        <Typography variant="h5" sx={{ mb: 2 }}>
           Phân bố doanh thu theo sản phẩm
         </Typography>
         <Tabs

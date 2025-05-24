@@ -2,33 +2,44 @@ import {
   Box,
   TextField,
   Grid,
-  IconButton,
   Button,
   Select,
   MenuItem,
   InputLabel,
   FormControl,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { useDialog } from "@/providers/dialog-provider";
 import { CreateOrderDialog } from "@/components/dialog/create-update-order-dialog";
+import type { OrdersControllerFindAllV1Data, Order } from "@/client/api";
+import { ORDER_STATUS_LABEL } from "@/lib/constant";
+import type { OrderFormData } from "../forms/order-form";
+import { createOrder } from "@/client/services/order-service";
+import { toast } from "react-toastify";
+import { useSetAtom } from "jotai";
+import { orderState } from "@/state";
 interface OrderFilterBarProps {
-  filters: {
-    customerName: string;
-    status: string;
-    orderCode: string;
-  };
+  filters: Omit<OrdersControllerFindAllV1Data, "page" | "limit">;
   onFilterChange: (
     field: keyof OrderFilterBarProps["filters"]
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
+const handleAddOrder = (data: OrderFormData, onSuccess: (res: Order) => void, onError: () => void) => {
+  createOrder({
+    customer: data.customer,
+    item: data.item,
+    totalAmount: data.totalAmount,
+    deliveryAddress: data.deliveryAddress,
+  }, onSuccess, onError);
+};
 
 export function OrderFilterBar({
   filters,
   onFilterChange,
 }: OrderFilterBarProps) {
   const { openDialog } = useDialog();
+  const setOrder = useSetAtom(orderState);
 
   return (
     <Box sx={{ pb: 2 }}>
@@ -37,8 +48,8 @@ export function OrderFilterBar({
           <TextField
             fullWidth
             label="Tên khách hàng"
-            value={filters.customerName}
-            onChange={onFilterChange("customerName")}
+            value={filters.customer}
+            onChange={onFilterChange("customer")}
             size="medium"
           />
         </Grid>
@@ -55,11 +66,12 @@ export function OrderFilterBar({
           }
           size="medium"
         >
-          <MenuItem value="all">Tất cả</MenuItem>
-          <MenuItem value="pending">Chờ xác nhận</MenuItem>
-          <MenuItem value="confirmed">Đã xác nhận</MenuItem>
-          <MenuItem value="delivered">Đã giao hàng</MenuItem>
-          <MenuItem value="cancelled">Đã hủy</MenuItem>
+          <MenuItem value="">Tất cả</MenuItem>
+          {Object.entries(ORDER_STATUS_LABEL).map(([key, label]) => (
+            <MenuItem key={key} value={key}>
+              {label}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
         </Grid>
@@ -67,29 +79,27 @@ export function OrderFilterBar({
           <TextField
             fullWidth
             label="Mã đơn hàng"
-            value={filters.orderCode}
-            onChange={onFilterChange("orderCode")}
+            value={filters.code}
+            onChange={onFilterChange("code")}
             size="medium"
           />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 1 }}>
-          <IconButton
-            color="primary"
-            aria-label="search"
-            sx={{ fontSize: 20, scale: 1.2 }}
-          >
-            <SearchIcon />
-          </IconButton>
         </Grid>
         <Grid size={{ xs: 6, sm: 2 }}>
           <Button
             variant="contained"
             color="primary"
+            sx={{ height: "100%" }}
             onClick={() =>
               openDialog(
                 <CreateOrderDialog
-                  onClose={() => {}}
-                  onSubmit={() => {}}
+                  onSubmit={(data) => {
+                    handleAddOrder(data, (res) => {
+                      toast.success("Đơn hàng đã được thêm thành công");
+                      setOrder(prev => [...prev, res]);
+                    }, () => {
+                      toast.error("Có lỗi xảy ra khi thêm đơn hàng");
+                    });
+                  }}
                   isLoading={false}
                   initialData={undefined}
                   title="Thêm đơn hàng"

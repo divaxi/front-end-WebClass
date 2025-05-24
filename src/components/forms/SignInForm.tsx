@@ -14,7 +14,7 @@ const signInSchema = z.object({
   password: z
     .string()
     .min(1, "Mật khẩu không được để trống")
-    .min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+    .min(4, "Mật khẩu phải có ít nhất 4 ký tự"),
 });
 
 type SignInFormData = z.infer<typeof signInSchema>;

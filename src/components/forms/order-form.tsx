@@ -11,17 +11,11 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
-import type { Order } from "@/type";
+import type { Customer, Order } from "@/client/api";
+import { useCustomers } from "@/client/services/customer-service";
 
-// Danh sách khách hàng mẫu
-const availableCustomers = [
-  { id: "1", name: "Nguyễn Văn A", phone: "0123456789" },
-  { id: "2", name: "Trần Thị B", phone: "0987654321" },
-  { id: "3", name: "Lê Văn C", phone: "0123987456" },
-];
 
-// Chuyển đổi dữ liệu khách hàng sang định dạng Option
-const customerOptions = availableCustomers.map((customer) => ({
+const customerOptionsTranform = (customers: Customer[]) => customers?.map((customer) => ({
   value: customer.id,
   displayName: `${customer.name} - ${customer.phone}`,
 }));
@@ -41,7 +35,7 @@ const orderSchema = z.object({
   customer: z.object({
     id: z.string().min(1, "Vui lòng chọn khách hàng"),
   }),
-  items: z
+  item: z
     .array(
       z.object({
         productName: z.string().min(1, "Tên sản phẩm không được để trống"),
@@ -50,8 +44,7 @@ const orderSchema = z.object({
       })
     )
     .min(1, "Đơn hàng phải có ít nhất một sản phẩm"),
-  status: z.string().min(1, "Trạng thái không được để trống"),
-  total: z.number().min(0, "Tổng tiền không được âm"),
+  totalAmount: z.number().min(0, "Tổng tiền không được âm"),
   deliveryAddress: z.string().min(1, "Địa chỉ giao hàng không được để trống"),
 });
 
@@ -70,7 +63,7 @@ const OrderItemList: React.FC<{
 }> = ({ control, disabled, setValue }) => {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "items",
+    name: "item",
   });
 
   const handleAddProduct = () => {
@@ -101,7 +94,7 @@ const OrderItemList: React.FC<{
         >
           <Box sx={{ flex: 1 }}>
             <SelectInputController<OrderFormData>
-              name={`items.${index}.productName`}
+              name={`item.${index}.productName`}
               label="Sản phẩm"
               control={control}
               setValue={setValue}
@@ -113,7 +106,7 @@ const OrderItemList: React.FC<{
                   (p) => p.name === option.value
                 );
                 if (product) {
-                  setValue(`items.${index}`, {
+                  setValue(`item.${index}`, {
                     productName: product.name,
                     quantity: 1,
                     unitPrice: product.price,
@@ -125,7 +118,7 @@ const OrderItemList: React.FC<{
 
           <Box sx={{ width: "150px" }}>
             <TextInputController<OrderFormData>
-              name={`items.${index}.quantity`}
+              name={`item.${index}.quantity`}
               label="Số lượng"
               type="number"
               control={control}
@@ -143,7 +136,7 @@ const OrderItemList: React.FC<{
 
           <Box sx={{ width: "200px" }}>
             <TextInputController<OrderFormData>
-              name={`items.${index}.unitPrice`}
+              name={`item.${index}.unitPrice`}
               label="Đơn giá"
               type="number"
               control={control}
@@ -189,6 +182,12 @@ const OrderForm: React.FC<OrderFormProps> = ({
   isLoading = false,
   initialData,
 }) => {
+  const { data } = useCustomers({
+    page: 1,
+    limit: 10,
+    name: "",
+  });
+
   const {
     control,
     handleSubmit,
@@ -201,13 +200,13 @@ const OrderForm: React.FC<OrderFormProps> = ({
       customer: {
         id: initialData?.customer?.id?.toString() || "",
       },
-      items: initialData?.items || [],
-      total: initialData?.total || 0,
+      item: initialData?.item || [],
+      totalAmount: initialData?.totalAmount || 0,
       deliveryAddress: initialData?.deliveryAddress || "",
     },
   });
 
-  const items = watch("items");
+  const items = watch("item");
   const quantities = items.map((item) => item.quantity);
   const unitPrices = items.map((item) => item.unitPrice);
 
@@ -216,15 +215,15 @@ const OrderForm: React.FC<OrderFormProps> = ({
       (sum, item) => sum + item.quantity * item.unitPrice,
       0
     );
-    setValue("total", total);
+    setValue("totalAmount", total);
   }, [items, quantities, unitPrices, setValue]);
 
   React.useEffect(() => {
     if (errors) {
-      toast.error(errors.items?.message);
+      toast.error(errors.item?.message);
       toast.error(errors.customer?.message);
       toast.error(errors.deliveryAddress?.message);
-      toast.error(errors.total?.message);
+      toast.error(errors.totalAmount?.message);
     }
   }, [errors]);
 
@@ -238,13 +237,18 @@ const OrderForm: React.FC<OrderFormProps> = ({
         }}
       >
         <SelectInputController<OrderFormData>
-          name="customer"
+          name="customer.id"
           label="Khách hàng"
           control={control}
           setValue={setValue}
-          options={customerOptions}
+          options={customerOptionsTranform(data?.data || [])}
           disabled={isLoading}
           rules={{ required: "Vui lòng chọn khách hàng" }}
+          setSubLocation={(option) => {
+            setValue("customer", {
+              id: option.value.toString()
+            });
+          }}
         />
 
         <OrderItemList
@@ -262,7 +266,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
         />
 
         <TextInputController<OrderFormData>
-          name="total"
+          name="totalAmount"
           label="Tổng tiền"
           type="number"
           control={control}

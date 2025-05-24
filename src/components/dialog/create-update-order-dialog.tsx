@@ -5,7 +5,7 @@ import type { OrderFormData } from "@/components/forms/order-form";
 import { useDialog } from "@/providers/dialog-provider";
 
 interface CreateOrderDialogProps {
-  onClose: () => void;
+  onClose?: () => void;
   onSubmit: (orderData: OrderFormData) => void;
   isLoading?: boolean;
   initialData?: OrderFormData;
@@ -25,7 +25,7 @@ export const CreateOrderDialog: React.FC<CreateOrderDialogProps> = ({
       open={isDialogOpen}
       onClose={() => {
         closeDialog();
-        onClose();
+        onClose?.();
       }}
       maxWidth="md"
       fullWidth
@@ -39,7 +39,13 @@ export const CreateOrderDialog: React.FC<CreateOrderDialogProps> = ({
         {title}
       </DialogTitle>
       <DialogContent>
-        <OrderForm onSubmit={onSubmit} isLoading={isLoading} />
+        <OrderForm
+          onSubmit={(data) => {
+            onSubmit(data);
+            closeDialog();
+          }}
+          isLoading={isLoading}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -4,7 +4,7 @@ import { CustomerForm } from "@/components/forms";
 import type { CustomerFormData } from "@/components/forms/customer-form";
 import { useDialog } from "@/providers/dialog-provider";
 interface CreateCustomerDialogProps {
-  onClose: () => void;
+  onClose?: () => void;
   onSubmit: (customerData: CustomerFormData) => void;
   isLoading?: boolean;
   initialData?: CustomerFormData;
@@ -24,7 +24,7 @@ export const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
       open={isDialogOpen}
       onClose={() => {
         closeDialog();
-        onClose();
+        onClose?.();
       }}
       maxWidth="sm"
       fullWidth
@@ -34,7 +34,10 @@ export const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
       </DialogTitle>
       <DialogContent>
         <CustomerForm
-          onSubmit={onSubmit}
+          onSubmit={(data) => {
+            onSubmit(data);
+            closeDialog();
+          }}
           isLoading={isLoading}
           initialData={initialData}
         />

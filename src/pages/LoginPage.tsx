@@ -3,6 +3,12 @@ import styled from "@emotion/styled";
 // @ts-ignore
 import AppIcon from "@/assets/AppIcon.svg?react";
 import { SignInForm } from "@/components/forms";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { loginWithEmail } from "@/client/services/auth";
+import { useSetAtom } from "jotai";
+import { authState } from "@/state";
 
 const PageContainer = styled(Box)`
   min-height: 100vh;
@@ -99,6 +105,12 @@ const StyledAppIcon = styled(AppIcon)`
 `;
 
 export default function LoginPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const setAuthState = useSetAtom(authState);
+
+
+
   return (
     <PageContainer>
       <ContentWrapper>
@@ -135,8 +147,24 @@ export default function LoginPage() {
               Vui lòng đăng nhập để tiếp tục
             </Typography>
             <SignInForm
+              isLoading={isLoading}
               onSubmit={(data) => {
-                console.log(data);
+                setIsLoading(true);
+                loginWithEmail({
+                  requestBody: {
+                    email: data.email,
+                    password: data.password,
+                  },
+                }, (res) => {
+                    toast.success("Đăng nhập thành công");
+                    setAuthState(res);
+                    navigate("/");
+                  },
+                  () => {
+                    toast.error("Đăng nhập thất bại");
+                  }
+                );
+                setIsLoading(false);
               }}
             />
           </LoginCard>

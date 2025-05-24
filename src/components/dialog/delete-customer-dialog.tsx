@@ -11,14 +11,13 @@ import { Dialog } from "@mui/material";
 import { useDialog } from "@/providers/dialog-provider";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-export const DeleteCustomerDialog = ({ onClose }: { onClose: () => void }) => {
+export const DeleteCustomerDialog = ({onSubmit }: {onSubmit: () => void }) => {
   const { isDialogOpen, closeDialog } = useDialog();
   return (
     <Dialog
       open={isDialogOpen}
       onClose={() => {
         closeDialog();
-        onClose?.();
       }}
     >
       <DialogTitle variant="h5" sx={{ fontWeight: 600, color: "error.main" }}>
@@ -53,20 +52,18 @@ export const DeleteCustomerDialog = ({ onClose }: { onClose: () => void }) => {
         <Button
           onClick={() => {
             closeDialog();
-            onClose?.();
           }}
           variant="contained"
           color="error"
           size="medium"
         >
-          <Typography variant="body1" sx={{ fontWeight: 600 }}>
+            <Typography variant="body1" sx={{ fontWeight: 600 }} onClick={onSubmit}>
             Xóa
           </Typography>
         </Button>
         <Button
           onClick={() => {
             closeDialog();
-            onClose?.();
           }}
           variant="contained"
           color="primary"

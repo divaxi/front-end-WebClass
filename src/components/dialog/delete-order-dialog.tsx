@@ -11,7 +11,7 @@ import { Dialog } from "@mui/material";
 import { useDialog } from "@/providers/dialog-provider";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-export const DeleteOrderDialog = ({ onClose }: { onClose: () => void }) => {
+export const DeleteOrderDialog = ({ onSubmit, onClose }: { onSubmit: () => void, onClose?: () => void }) => {
   const { isDialogOpen, closeDialog } = useDialog();
   return (
     <Dialog
@@ -52,8 +52,8 @@ export const DeleteOrderDialog = ({ onClose }: { onClose: () => void }) => {
       <DialogActions>
         <Button
           onClick={() => {
+            onSubmit?.();
             closeDialog();
-            onClose?.();
           }}
           variant="contained"
           color="error"

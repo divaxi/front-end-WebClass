@@ -5,8 +5,10 @@ import {
   Divider,
   Button,
 } from "@mui/material";
-import type { Order } from "@/type";
+import type { Order } from "@/client/api";
 import OrderHistoryDialog from "./dialog/order-history-dialog";
+import { format, parseISO } from "date-fns";
+import { ORDER_STATUS_LABEL } from "@/lib/constant";
 interface OrderDetailProps {
   order: Order;
 }
@@ -15,7 +17,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <OrderHistoryDialog open={openHistoryDialog} onClose={() => setOpenHistoryDialog(false)} />
+      {/* <OrderHistoryDialog open={openHistoryDialog} onClose={() => setOpenHistoryDialog(false)} /> */}
       <Box>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           Thông tin đơn hàng
@@ -25,11 +27,17 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
             <strong>Mã đơn hàng:</strong> {order.orderCode}
           </Typography>
           <Typography variant="body1">
-            <strong>Ngày đặt:</strong> {order.orderDate}
+              <strong>Ngày đặt:</strong> {format(parseISO(order.createdAt), "dd/MM/yyyy")}
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <Typography variant="body1">
+            <strong>Ngày giao:</strong> {order?.deliveredDate ? format(parseISO(order?.deliveredDate), "dd/MM/yyyy") : "Chưa giao"}
+          </Typography>
+          <Typography variant="body1">
+            <strong>Địa chỉ giao hàng:</strong> {order.deliveryAddress}
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 15 }}>
             <Typography variant="body1">
-              <strong>Trạng thái:</strong> {order.status}
+              <strong>Trạng thái:</strong> {ORDER_STATUS_LABEL[order.status]}
             </Typography>
             <Button
               variant="contained"
@@ -52,16 +60,16 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography variant="body1">
-            <strong>Tên khách hàng:</strong> {order.customer.name}
+            <strong>Tên khách hàng:</strong> {order.customer?.name}
           </Typography>
           <Typography variant="body1">
-            <strong>Số điện thoại:</strong> {order.customer.phone}
+            <strong>Số điện thoại:</strong> {order.customer?.phone}
           </Typography>
           <Typography variant="body1">
-            <strong>Email:</strong> {order.customer.email}
+                <strong>Email:</strong> {order.customer?.email}
           </Typography>
           <Typography variant="body1">
-            <strong>Địa chỉ:</strong> {order.customer.address}
+            <strong>Địa chỉ:</strong> {order.customer?.address}
           </Typography>
         </Box>
       </Box>
@@ -73,7 +81,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
           Danh sách sản phẩm
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {order.items.map((item, index) => (
+          {order.item.map((item, index) => (
             <Box
               key={index}
               sx={{
@@ -97,7 +105,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
               <Box sx={{ width: "200px" }}>
                 <Typography variant="body1">
                   <strong>Đơn giá:</strong>{" "}
-                  {item.unitPrice.toLocaleString("vi-VN")}đ
+                  {item.unitPrice?.toLocaleString("vi-VN")}đ
                 </Typography>
               </Box>
             </Box>
@@ -112,7 +120,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
           Tổng tiền
         </Typography>
         <Typography variant="h5" sx={{ color: "#3b82f6", fontWeight: 600 }}>
-          {order.total.toLocaleString("vi-VN")}đ
+          {order.totalAmount?.toLocaleString("vi-VN")}đ
         </Typography>
       </Box>
     </Box>

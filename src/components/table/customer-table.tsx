@@ -5,17 +5,38 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Box, IconButton } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
-import type { Customer } from "@/type";
 import { useAtom } from "jotai";
 import { customerState } from "@/state";
 import { useDialog } from "@/providers/dialog-provider";
 import { CreateCustomerDialog } from "@/components/dialog/create-update-customer-dialog";
 import { DeleteCustomerDialog } from "@/components/dialog/delete-customer-dialog";
 import { toast } from "react-toastify";
+import {
+  updateCustomer,
+  deleteCustomer,
+} from "@/client/services/customer-service";
+import type { Customer, UpdateCustomerDto } from "@/client/api";
 interface CustomerTableProps {
   customers: Customer[];
   loading?: boolean;
 }
+
+const handleUpdateCustomer = (
+  id: string,
+  customerData: UpdateCustomerDto,
+  onSuccess: () => void,
+  onError: () => void
+) => {
+  updateCustomer(id, customerData, onSuccess, onError);
+};
+
+const handleDeleteCustomer = (
+  customer: Customer,
+  onSuccess: () => void,
+  onError: () => void
+) => {
+  deleteCustomer(customer, onSuccess, onError);
+};
 
 export const CustomerTable = ({
   customers,
@@ -74,7 +95,7 @@ export const CustomerTable = ({
       valueFormatter: (params: { value: string }) => {
         try {
           return format(parseISO(params.value), "dd/MM/yyyy", { locale: vi });
-        } catch (error) {
+        } catch {
           return params.value;
         }
       },
@@ -97,14 +118,23 @@ export const CustomerTable = ({
                   <CreateCustomerDialog
                     onClose={() => {}}
                     onSubmit={(customerData) => {
-                      setCustomer(
-                        customer.map((item) =>
-                          item.id === params.row.id
-                            ? { ...item, ...customerData }
-                            : item
-                        )
+                      handleUpdateCustomer(
+                        params.row.id,
+                        customerData as UpdateCustomerDto,
+                        () => {
+                          setCustomer(
+                            customer.map((item) =>
+                              item.id === params.row.id
+                                ? { ...item, ...customerData }
+                                : item
+                            )
+                          );
+                          toast.success("Cập nhật khách hàng thành công");
+                        },
+                        () => {
+                          toast.error("Cập nhật khách hàng thất bại");
+                        }
                       );
-                      toast.success("Cập nhật khách hàng thành công");
                     }}
                     title="Cập nhật khách hàng"
                     initialData={params.row}
@@ -118,11 +148,19 @@ export const CustomerTable = ({
               onClick={() => {
                 openDialog(
                   <DeleteCustomerDialog
-                    onClose={() => {
-                      setCustomer(
-                        customer.filter((item) => item.id !== params.row.id)
+                    onSubmit={() => {
+                      handleDeleteCustomer(
+                        params.row,
+                        () => {
+                          setCustomer(
+                            customer.filter((item) => item.id !== params.row.id)
+                          );
+                          toast.success("Xóa khách hàng thành công");
+                        },
+                        () => {
+                          toast.error("Xóa khách hàng thất bại");
+                        }
                       );
-                      toast.success("Xóa khách hàng thành công");
                     }}
                   />
                 );
@@ -150,6 +188,7 @@ export const CustomerTable = ({
       localeText={{
         noRowsLabel: "Không có dữ liệu",
       }}
+      
       sx={{
         overflowX: "auto",
         "& .header-cell": {

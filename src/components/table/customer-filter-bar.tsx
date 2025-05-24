@@ -1,22 +1,33 @@
 import { Box, TextField, Grid, IconButton, Button } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { useDialog } from "@/providers/dialog-provider";
 import { CreateCustomerDialog } from "@/components/dialog/create-update-customer-dialog";
 import { toast } from "react-toastify";
+import { createCustomer } from "@/client/services/customer-service";
+import type { CustomerFormData } from "../forms/customer-form";
+import type { CustomersControllerFindAllV1Data, Customer } from "@/client/api";
+import { useSetAtom } from "jotai";
+import { customerState } from "@/state";
 interface FilterBarProps {
-  filters: {
-    name: string;
-    phone: string;
-    address: string;
-  };
+  filters: CustomersControllerFindAllV1Data;
   onFilterChange: (
     field: "name" | "phone" | "address"
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+const handleAddCustomer = (data: CustomerFormData, onSuccess: (res: Customer) => void, onError: () => void) => {
+  createCustomer({
+    name: data.name,
+    phone: data.phone,
+    address: data.address,
+    note: data.note || undefined,
+    email: data.email,
+  }, onSuccess, onError);
+};
+
 export const FilterBar = ({ filters, onFilterChange }: FilterBarProps) => {
   const { openDialog } = useDialog();
+  const setCustomer = useSetAtom(customerState);
   return (
     <Box sx={{ pb: 2 }}>
       <Grid container spacing={2} position="relative">
@@ -47,26 +58,23 @@ export const FilterBar = ({ filters, onFilterChange }: FilterBarProps) => {
             size="medium"
           />
         </Grid>
-        <Grid size={{ xs: 6, sm: 1 }}>
-          <IconButton
-            color="primary"
-            aria-label="search"
-            sx={{ fontSize: 20, scale: 1.2 }}
-          >
-            <SearchIcon />
-          </IconButton>
-        </Grid>
         <Grid size={{ xs: 6, sm: 2 }}>
           <Button
             variant="contained"
             color="primary"
+            sx={{ height: "100%" }}
             onClick={() =>
               openDialog(
                 <CreateCustomerDialog
-                  onClose={() => {}}
-                  onSubmit={() => {
-                    toast.success("Thêm khách hàng thành công");
+                  onSubmit={(data) => {
+                    handleAddCustomer(data, (res) => {
+                      toast.success("Thêm khách hàng thành công");
+                      setCustomer(prev => [...prev, res]);
+                    }, () => {
+                      toast.error("Thêm khách hàng thất bại");
+                    });
                   }}
+
                   title="Thêm khách hàng"
                 />
               )
@@ -80,3 +88,4 @@ export const FilterBar = ({ filters, onFilterChange }: FilterBarProps) => {
     </Box>
   );
 };
+

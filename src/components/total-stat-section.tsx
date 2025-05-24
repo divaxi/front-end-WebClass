@@ -35,7 +35,7 @@ export default function TotalStatSection() {
           >
             <ShoppingCartIcon sx={{ fontSize: 40 }} />
           </Box>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+          <Typography variant="h5" color="text.secondary" gutterBottom>
             Tổng số đơn hàng
           </Typography>
           <Typography variant="h4" color="primary" fontWeight="bold">
@@ -72,7 +72,7 @@ export default function TotalStatSection() {
           >
             <AttachMoneyIcon sx={{ fontSize: 40 }} />
           </Box>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+          <Typography variant="h5" color="text.secondary" gutterBottom>
             Tổng doanh thu
           </Typography>
           <Typography variant="h4" color="success.main" fontWeight="bold">
@@ -109,7 +109,7 @@ export default function TotalStatSection() {
           >
             <PeopleIcon sx={{ fontSize: 40 }} />
           </Box>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+          <Typography variant="h5" color="text.secondary" gutterBottom>
             Tổng số khách hàng
           </Typography>
           <Typography variant="h4" color="warning.main" fontWeight="bold">

@@ -1,19 +1,31 @@
 import { useAtomValue } from "jotai";
 import { Navigate, useLocation } from "react-router-dom";
 import { authState } from "@/state";
+import { useEffect, useState } from "react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isLogin } = useAtomValue(authState);
+  const auth = useAtomValue(authState);
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (isLogin) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (!auth) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-
   return <>{children}</>;
 };
 

@@ -1,23 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "@/router";
 import { ThemeProvider } from "@emotion/react";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
 import { DialogProvider } from "@/providers/dialog-provider";
+import { Bounce, ToastContainer } from "react-toastify";
+import { useAtomValue } from "jotai";
+import { authState } from "@/state";
+import requestwithtokens from "@/client/services/interceptors";
+import { OpenAPI } from "@/client/api";
+import { SWRConfig } from "swr";
+import { optionsSWR } from "@/lib/utils";
 
 const MyApp = () => {
-  // const { accessToken } = useAtomValue(authState);
-  // OpenAPI.TOKEN = accessToken;
-  // localStorage.setItem(templateStorage, app.template);
+  const auth = useAtomValue(authState);
+
+  useEffect(() => {
+    if (auth) {
+      OpenAPI.TOKEN = auth.token;
+      requestwithtokens();
+    }
+  }, [auth]);
 
   return (
     <div>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme} >
         <CssBaseline />
-        <DialogProvider>
-          <RouterProvider router={router} />
+        <SWRConfig value={optionsSWR}> 
+          <DialogProvider>
+            <RouterProvider router={router} />
+            <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        draggable
+        theme="light"
+        transition={Bounce}
+      />
         </DialogProvider>
+        </SWRConfig>
       </ThemeProvider>
     </div>
   );
