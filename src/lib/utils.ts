@@ -11,3 +11,12 @@ export const optionsSWR: SWRConfiguration= {
   refreshInterval: 60000,
   suspense: false,
 }
+
+export const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+};

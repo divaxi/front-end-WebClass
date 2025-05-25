@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import {
   Box,
   Typography,
@@ -9,15 +9,37 @@ import type { Order } from "@/client/api";
 import OrderHistoryDialog from "./dialog/order-history-dialog";
 import { format, parseISO } from "date-fns";
 import { ORDER_STATUS_LABEL } from "@/lib/constant";
+import { useOrderHistories } from "@/client/services/order-history-service";
+import { useAtom } from "jotai";
+import { orderHistoryState } from "@/state";
+import { toast } from "react-toastify";
 interface OrderDetailProps {
   order: Order;
 }
 
 const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
+  const {data, error} = useOrderHistories({
+    orderId: order.id,
+  })
+  
+  const [orderHistory, setOrderHistory] = useAtom(orderHistoryState);
+
+  useEffect(() => {
+    if (data?.data) {
+      setOrderHistory(data.data);
+    }
+  }, [data?.data]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error("Lỗi khi lấy lịch sử đơn hàng");
+    }
+  }, [error]);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      {/* <OrderHistoryDialog open={openHistoryDialog} onClose={() => setOpenHistoryDialog(false)} /> */}
+      {/* <OrderHistoryDialog open={openHistoryDialog} onClose={() => setOpenHistoryDialog(false)} order={order} /> */}
       <Box>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           Thông tin đơn hàng
@@ -37,7 +59,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 15 }}>
             <Typography variant="body1">
-              <strong>Trạng thái:</strong> {ORDER_STATUS_LABEL[order.status]}
+              <strong>Trạng thái:</strong> {ORDER_STATUS_LABEL[orderHistory[orderHistory.length - 1]?.status] || ORDER_STATUS_LABEL[order.status]}
             </Typography>
             <Button
               variant="contained"

@@ -70,11 +70,15 @@ export type CustomerDto = {
   id: string;
 };
 
-export type EnumerateCountOrderDto = {
-  enumerateBy?: string;
-  startDate: string;
-  endDate: string;
-  status?: string;
+export type EnumerateResponseDto = {
+  total: number;
+  data: Array<{
+    revenue: number;
+    count:number
+    day?: string;
+    month?: string;
+    year?: string;
+  }>;
 };
 
 export type FileDto = {
@@ -196,8 +200,14 @@ export type StatusDto = {
   };
 };
 
+export type TotalOrderEachStatusResponseDto = {
+  total: number;
+  status: string;
+};
+
 export type TotalResponseDto = {
   total: number;
+  status: string;
 };
 
 export type UpdateCustomerDto = {
@@ -344,6 +354,7 @@ export type OrderHistoriesControllerCreateV1Response = OrderHistory;
 
 export type OrderHistoriesControllerFindAllV1Data = {
   limit?: number;
+  orderId?: string;
   page?: number;
   xCustomLang?: unknown;
 };
@@ -399,8 +410,7 @@ export type SatisticControllerCountOrderByTimeV1Data = {
   xCustomLang?: unknown;
 };
 
-export type SatisticControllerCountOrderByTimeV1Response =
-  EnumerateCountOrderDto;
+export type SatisticControllerCountOrderByTimeV1Response = EnumerateResponseDto;
 
 export type SatisticControllerTotalRevenueV1Data = {
   endDate: string;
@@ -419,6 +429,24 @@ export type SatisticControllerTotalOrderV1Data = {
 };
 
 export type SatisticControllerTotalOrderV1Response = TotalResponseDto;
+
+export type SatisticControllerTotalOrderEachStatusV1Data = {
+  endDate: string;
+  startDate: string;
+  xCustomLang?: unknown;
+};
+
+export type SatisticControllerTotalOrderEachStatusV1Response =
+  Array<TotalOrderEachStatusResponseDto>;
+
+export type SatisticControllerTotalCustomerV1Data = {
+  endDate: string;
+  startDate: string;
+  status?: string;
+  xCustomLang?: unknown;
+};
+
+export type SatisticControllerTotalCustomerV1Response = TotalResponseDto;
 
 export type UsersControllerCreateV1Data = {
   requestBody: CreateUserDto;

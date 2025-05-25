@@ -32,13 +32,11 @@ export default function OrderPage() {
       toast.error("Lỗi khi tải dữ liệu đơn hàng");
     }
     setOrders(data?.data || []);
-  }, [data,error]);
+  }, [data, error, setOrders]);
 
   useEffect(() => {
-    console.log(filters);
     mutate();
-  }, [filters]);
-
+  }, [filters, mutate]);
 
   const handleFilterChange =
     (field: keyof typeof filters) =>
@@ -52,7 +50,7 @@ export default function OrderPage() {
   return (
     <Paper sx={{ p: 2 }}>
       <OrderFilterBar filters={filters} onFilterChange={handleFilterChange} />
-      <OrderTable orders={orders} />
+      {/* <OrderTable orders={orders} /> */}
     </Paper>
   );
 }

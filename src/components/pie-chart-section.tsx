@@ -1,65 +1,76 @@
 import { Typography, Paper, Box, Grid, Tab, Tabs } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PieChart from "./chart/PieChart";
+import { useSatisticTotalOrderEachStatus } from "@/client/services/satistic";
+import { format, startOfDay, startOfWeek, startOfMonth } from "date-fns";
+import type { SatisticControllerTotalOrderEachStatusV1Response } from "@/client/api";
+import { ORDER_STATUS_LABEL } from "@/lib/constant";
+import { toast } from "react-toastify";
+
+const mapper = (
+  data: SatisticControllerTotalOrderEachStatusV1Response | undefined
+) => {
+  if (!data) return [];
+  return data.map((item, index) => ({
+    id: index,
+    value: item.total,
+    label: ORDER_STATUS_LABEL[item.status as keyof typeof ORDER_STATUS_LABEL],
+  }));
+};
 
 export default function PieChartSection() {
   const [tab, setTab] = useState(0);
+  const [startDate, setStartDate] = useState(
+    format(startOfDay(new Date()), "yyyy-MM-dd")
+  );
 
-  // Dữ liệu mẫu cho các khoảng thời gian khác nhau
-  const dataByPeriod = {
-    daily: [
-      { id: 0, value: 35, label: "Sản phẩm A" },
-      { id: 1, value: 25, label: "Sản phẩm B" },
-      { id: 2, value: 20, label: "Sản phẩm C" },
-      { id: 3, value: 20, label: "Sản phẩm D" },
-    ],
-    weekly: [
-      { id: 0, value: 40, label: "Sản phẩm A" },
-      { id: 1, value: 30, label: "Sản phẩm B" },
-      { id: 2, value: 15, label: "Sản phẩm C" },
-      { id: 3, value: 15, label: "Sản phẩm D" },
-    ],
-    monthly: [
-      { id: 0, value: 45, label: "Sản phẩm A" },
-      { id: 1, value: 25, label: "Sản phẩm B" },
-      { id: 2, value: 20, label: "Sản phẩm C" },
-      { id: 3, value: 10, label: "Sản phẩm D" },
-    ],
-  };
+  const { data: totalOrderEachStatus, error: errorTotalOrderEachStatus } =
+    useSatisticTotalOrderEachStatus({
+      startDate,
+      endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
+    });
 
-  // Lấy dữ liệu dựa trên tab được chọn
-  const getDataByTab = () => {
-    switch (tab) {
-      case 0:
-        return dataByPeriod.daily;
-      case 1:
-        return dataByPeriod.weekly;
-      case 2:
-        return dataByPeriod.monthly;
-      default:
-        return dataByPeriod.daily;
+  useEffect(() => {
+    if (errorTotalOrderEachStatus) {
+      toast.error("Lỗi khi tải dữ liệu thống kê");
     }
+  }, [errorTotalOrderEachStatus]);
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setTab(newValue);
+    let newStartDate = startDate;
+
+    switch (newValue) {
+      case 0:
+        newStartDate = format(startOfDay(new Date()), "yyyy-MM-dd");
+        break;
+      case 1:
+        newStartDate = format(
+          startOfWeek(new Date(), { weekStartsOn: 1 }),
+          "yyyy-MM-dd"
+        );
+
+        break;
+      case 2:
+        newStartDate = format(startOfMonth(new Date()), "yyyy-MM-dd");
+        break;
+    }
+    setStartDate(newStartDate);
   };
 
   return (
-    <Grid size={{ md: 12, lg: 5 }} width={"100%"}>
+    <Grid size={12} width={"100%"}>
       <Paper sx={{ p: 2, height: "100%" }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
-          Phân bố doanh thu theo sản phẩm
+          Phân bố đơn hàng theo trạng thái
         </Typography>
-        <Tabs
-          value={tab}
-          onChange={(event, newValue) => {
-            setTab(newValue);
-          }}
-          sx={{ mb: 2 }}
-        >
+        <Tabs value={tab} onChange={handleTabChange} sx={{ mb: 2 }}>
           <Tab label="Ngày" tabIndex={0} sx={{ fontFamily: "Inter" }} />
           <Tab label="Tuần" tabIndex={1} sx={{ fontFamily: "Inter" }} />
           <Tab label="Tháng" tabIndex={2} sx={{ fontFamily: "Inter" }} />
         </Tabs>
         <Box sx={{ height: "calc(100% - 8rem)" }}>
-          <PieChart data={getDataByTab()} />
+          <PieChart data={mapper(totalOrderEachStatus)} />
         </Box>
       </Paper>
     </Grid>

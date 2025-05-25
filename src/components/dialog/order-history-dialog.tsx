@@ -13,30 +13,29 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import type { OrderHistory } from "@/client/api";
-import { useAtom } from "jotai";
-import { orderHistoryState } from "@/state";
-import { useOrderHistories } from "@/client/services/order-history-service";
+import type { Order, OrderStatusEnum, User } from "@/client/api";
+import { useAtom, useAtomValue } from "jotai";
+import { orderHistoryState, authState } from "@/state";
+import { ORDER_STATUS_LABEL } from "@/lib/constant";
 interface OrderHistoryDialogProps {
-  orderId: string;
+  order: Order;
   open: boolean;
   onClose: () => void;
   onUpdateStatus?: (status: string) => void;
-  orderHistories?: OrderHistory[];
 }
 
 const OrderHistoryDialog: React.FC<OrderHistoryDialogProps> = ({
-  orderId,
+  order,
   open,
   onClose,
-  orderHistories,
- 
+  onUpdateStatus,
 }) => {
-  const {data, error} = useOrderHistories({
-    orderId: orderId,
-  })
+
+  const auth = useAtomValue(authState);
 
   const [orderHistory, setOrderHistory] = useAtom(orderHistoryState);
+
+
 
   const [selectedStatus, setSelectedStatus] = useState("");
 
@@ -52,10 +51,13 @@ const OrderHistoryDialog: React.FC<OrderHistoryDialogProps> = ({
         order: orderHistory[orderHistory.length - 1].order,
         status: selectedStatus as OrderStatusEnum,
         createdAt: new Date().toISOString(),
+        changeByUser: auth?.user as User,
+        updatedAt: new Date().toISOString(),
       },...orderHistory]);
     }
   };
 
+ 
   return (
     <Dialog
       open={open}
@@ -80,11 +82,11 @@ const OrderHistoryDialog: React.FC<OrderHistoryDialogProps> = ({
                   onChange={handleStatusChange}
                   fullWidth
                 >
-                  <MenuItem value="Chờ xác nhận">Chờ xác nhận</MenuItem>
-                  <MenuItem value="Đã xác nhận">Đã xác nhận</MenuItem>
-                  <MenuItem value="Đang giao hàng">Đang giao hàng</MenuItem>
-                  <MenuItem value="Đã giao hàng">Đã giao hàng</MenuItem>
-                  <MenuItem value="Đã hủy">Đã hủy</MenuItem>
+                  {Object.keys(ORDER_STATUS_LABEL).map((status) => (
+                    <MenuItem key={status} value={status}>
+                      {ORDER_STATUS_LABEL[status as keyof typeof ORDER_STATUS_LABEL]}
+                    </MenuItem>
+                  ))}
                 </Select>
               </Grid>
               <Grid size={{ xs: 12, md: 3 }}>

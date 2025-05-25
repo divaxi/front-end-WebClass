@@ -65,6 +65,14 @@
             }
           },
           {
+            "name": "orderId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "in": "header",
             "required": false,
             "name": "x-custom-lang",
@@ -1184,7 +1192,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EnumerateCountOrderDto"
+                  "$ref": "#/components/schemas/EnumerateResponseDto"
                 }
               }
             }
@@ -1264,6 +1272,123 @@
     "/api/v1/satistic/total-order": {
       "get": {
         "operationId": "SatisticController_totalOrder_v1",
+        "parameters": [
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-custom-lang",
+            "schema": {
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TotalResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Satistic"
+        ]
+      }
+    },
+    "/api/v1/satistic/total-order-each-status": {
+      "get": {
+        "operationId": "SatisticController_totalOrderEachStatus_v1",
+        "parameters": [
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-custom-lang",
+            "schema": {
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TotalOrderEachStatusResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Satistic"
+        ]
+      }
+    },
+    "/api/v1/satistic/total-user": {
+      "get": {
+        "operationId": "SatisticController_totalCustomer_v1",
         "parameters": [
           {
             "name": "startDate",
@@ -2062,27 +2187,22 @@
           }
         }
       },
-      "EnumerateCountOrderDto": {
+      "EnumerateResponseDto": {
         "type": "object",
         "properties": {
-          "enumerateBy": {
-            "type": "string"
+          "total": {
+            "type": "number"
           },
-          "startDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "endDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
-          "startDate",
-          "endDate"
+          "total",
+          "data"
         ]
       },
       "TotalResponseDto": {
@@ -2090,10 +2210,29 @@
         "properties": {
           "total": {
             "type": "number"
+          },
+          "status": {
+            "type": "string"
           }
         },
         "required": [
-          "total"
+          "total",
+          "status"
+        ]
+      },
+      "TotalOrderEachStatusResponseDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "total",
+          "status"
         ]
       }
     }

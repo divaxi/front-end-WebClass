@@ -52,6 +52,10 @@ import type {
   SatisticControllerTotalRevenueV1Response,
   SatisticControllerTotalOrderV1Data,
   SatisticControllerTotalOrderV1Response,
+  SatisticControllerTotalOrderEachStatusV1Data,
+  SatisticControllerTotalOrderEachStatusV1Response,
+  SatisticControllerTotalCustomerV1Data,
+  SatisticControllerTotalCustomerV1Response,
   UsersControllerCreateV1Data,
   UsersControllerCreateV1Response,
   UsersControllerFindAllV1Data,
@@ -392,6 +396,7 @@ export class OrderhistoriesService {
    * @param data The data for the request.
    * @param data.page
    * @param data.limit
+   * @param data.orderId
    * @param data.xCustomLang
    * @returns InfinityPaginationOrderHistoryResponseDto
    * @throws ApiError
@@ -408,6 +413,7 @@ export class OrderhistoriesService {
       query: {
         page: data.page,
         limit: data.limit,
+        orderId: data.orderId,
       },
     });
   }
@@ -540,7 +546,7 @@ export class SatisticService {
    * @param data.enumerateBy
    * @param data.status
    * @param data.xCustomLang
-   * @returns EnumerateCountOrderDto
+   * @returns EnumerateResponseDto
    * @throws ApiError
    */
   public static satisticControllerCountOrderByTimeV1(
@@ -602,6 +608,56 @@ export class SatisticService {
     return __request(OpenAPI, {
       method: "GET",
       url: "/api/v1/satistic/total-order",
+      headers: {
+        "x-custom-lang": data.xCustomLang,
+      },
+      query: {
+        startDate: data.startDate,
+        endDate: data.endDate,
+        status: data.status,
+      },
+    });
+  }
+
+  /**
+   * @param data The data for the request.
+   * @param data.startDate
+   * @param data.endDate
+   * @param data.xCustomLang
+   * @returns TotalOrderEachStatusResponseDto
+   * @throws ApiError
+   */
+  public static satisticControllerTotalOrderEachStatusV1(
+    data: SatisticControllerTotalOrderEachStatusV1Data
+  ): CancelablePromise<SatisticControllerTotalOrderEachStatusV1Response> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/satistic/total-order-each-status",
+      headers: {
+        "x-custom-lang": data.xCustomLang,
+      },
+      query: {
+        startDate: data.startDate,
+        endDate: data.endDate,
+      },
+    });
+  }
+
+  /**
+   * @param data The data for the request.
+   * @param data.startDate
+   * @param data.endDate
+   * @param data.status
+   * @param data.xCustomLang
+   * @returns TotalResponseDto
+   * @throws ApiError
+   */
+  public static satisticControllerTotalCustomerV1(
+    data: SatisticControllerTotalCustomerV1Data
+  ): CancelablePromise<SatisticControllerTotalCustomerV1Response> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/satistic/total-user",
       headers: {
         "x-custom-lang": data.xCustomLang,
       },
