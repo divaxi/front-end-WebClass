@@ -33,7 +33,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {},
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {

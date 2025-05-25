@@ -39,7 +39,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {},
   } = useForm<CustomerFormData>({
     resolver: zodResolver(customerSchema),
     defaultValues: {

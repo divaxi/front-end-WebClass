@@ -1,11 +1,10 @@
 import { Typography, Paper, Box, Grid, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PieChart from "./chart/PieChart";
 import { useSatisticTotalOrderEachStatus } from "@/client/services/satistic";
 import { format, startOfDay, startOfWeek, startOfMonth } from "date-fns";
 import type { SatisticControllerTotalOrderEachStatusV1Response } from "@/client/api";
 import { ORDER_STATUS_LABEL } from "@/lib/constant";
-import { toast } from "react-toastify";
 
 const mapper = (
   data: SatisticControllerTotalOrderEachStatusV1Response | undefined

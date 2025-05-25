@@ -1,7 +1,6 @@
 import { AuthService, OpenAPI } from "../api";
 import type {
   AuthControllerLoginV1Data,
-  AuthControllerRefreshV1Data,
   LoginResponseDto,
 } from "../api/types.gen";
 import requestwithtokens from "./interceptors";

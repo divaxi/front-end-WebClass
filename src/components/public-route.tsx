@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { authState } from "@/state";
 import { useEffect, useState } from "react";
 

@@ -8,7 +8,7 @@ import {
 import { Menu as MenuIcon } from "@mui/icons-material";
 import styled from "@emotion/styled";
 import { AvatarMenu } from "./avatar-menu";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { authState } from "@/state";
 import { logout } from "@/client/services/auth";
 import { toast } from "react-toastify";

@@ -39,6 +39,7 @@
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@hey-api/openapi-ts": "^0.66.5",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^22.15.21",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",

@@ -1,7 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Box, IconButton } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
@@ -9,12 +8,8 @@ import { useAtom } from "jotai";
 import { customerState } from "@/state";
 import { useDialog } from "@/providers/dialog-provider";
 import { CreateCustomerDialog } from "@/components/dialog/create-update-customer-dialog";
-import { DeleteCustomerDialog } from "@/components/dialog/delete-customer-dialog";
 import { toast } from "react-toastify";
-import {
-  updateCustomer,
-  deleteCustomer,
-} from "@/client/services/customer-service";
+import { updateCustomer } from "@/client/services/customer-service";
 import type { Customer, UpdateCustomerDto } from "@/client/api";
 interface CustomerTableProps {
   customers: Customer[];
@@ -28,14 +23,6 @@ const handleUpdateCustomer = (
   onError: () => void
 ) => {
   updateCustomer(id, customerData, onSuccess, onError);
-};
-
-const handleDeleteCustomer = (
-  customer: Customer,
-  onSuccess: () => void,
-  onError: () => void
-) => {
-  deleteCustomer(customer, onSuccess, onError);
 };
 
 export const CustomerTable = ({
@@ -92,12 +79,10 @@ export const CustomerTable = ({
       resizable: false,
       filterable: false,
       flex: 1,
-      valueFormatter: (params: { value: string }) => {
-        try {
-          return format(parseISO(params.value), "dd/MM/yyyy", { locale: vi });
-        } catch {
-          return params.value;
-        }
+      renderCell: (params) => {
+        return format(parseISO(params?.value || ""), "dd/MM/yyyy", {
+          locale: vi,
+        });
       },
     },
     {
@@ -144,30 +129,30 @@ export const CustomerTable = ({
             >
               <EditOutlinedIcon sx={{ color: "primary.main" }} />
             </IconButton>
-            <IconButton
-              onClick={() => {
-                openDialog(
-                  <DeleteCustomerDialog
-                    onSubmit={() => {
-                      handleDeleteCustomer(
-                        params.row,
-                        () => {
-                          setCustomer(
-                            customer.filter((item) => item.id !== params.row.id)
-                          );
-                          toast.success("Xóa khách hàng thành công");
-                        },
-                        () => {
-                          toast.error("Xóa khách hàng thất bại");
-                        }
-                      );
-                    }}
-                  />
-                );
-              }}
-            >
-              <DeleteOutlineOutlinedIcon sx={{ color: "error.main" }} />
-            </IconButton>
+            {/* <IconButton */}
+            {/*   onClick={() => { */}
+            {/*     openDialog( */}
+            {/*       <DeleteCustomerDialog */}
+            {/*         onSubmit={() => { */}
+            {/*           handleDeleteCustomer( */}
+            {/*             params.row, */}
+            {/*             () => { */}
+            {/*               setCustomer( */}
+            {/*                 customer.filter((item) => item.id !== params.row.id) */}
+            {/*               ); */}
+            {/*               toast.success("Xóa khách hàng thành công"); */}
+            {/*             }, */}
+            {/*             () => { */}
+            {/*               toast.error("Xóa khách hàng thất bại"); */}
+            {/*             } */}
+            {/*           ); */}
+            {/*         }} */}
+            {/*       /> */}
+            {/*     ); */}
+            {/*   }} */}
+            {/* > */}
+            {/*   <DeleteOutlineOutlinedIcon sx={{ color: "error.main" }} /> */}
+            {/* </IconButton> */}
           </Box>
         );
       },

@@ -1,5 +1,5 @@
 import { CustomerTable } from "@/components/table/customer-table";
-import { Button, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import { useState, useEffect } from "react";
 import { FilterBar } from "@/components/table/customer-filter-bar";
 import { useAtom } from "jotai";
@@ -27,11 +27,11 @@ export default function CustomerPage() {
 
   useEffect(() => {
     setCustomers(data?.data || []);
-  }, [data]);
+  }, [data, setCustomers]);
 
   useEffect(() => {
     mutate();
-  }, [filters]);
+  }, [filters, mutate]);
 
   const handleFilterChange =
     (field: keyof typeof filters) =>
