@@ -1,6 +1,6 @@
 import type { SWRConfiguration } from "swr";
 
-export const optionsSWR: SWRConfiguration= {
+export const optionsSWR: SWRConfiguration = {
   errorRetryCount: 3,
   errorRetryInterval: 5000,
   dedupingInterval: 2000,
@@ -10,7 +10,7 @@ export const optionsSWR: SWRConfiguration= {
   shouldRetryOnError: false,
   refreshInterval: 60000,
   suspense: false,
-}
+};
 
 export const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("vi-VN", {

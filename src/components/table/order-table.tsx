@@ -4,7 +4,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Box, IconButton } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
-import type { Order} from "@/client/api";
+import type { Order } from "@/client/api";
 import { useAtom } from "jotai";
 import { orderState } from "@/state";
 import { useDialog } from "@/providers/dialog-provider";
@@ -13,19 +13,24 @@ import { DeleteOrderDialog } from "@/components/dialog/delete-order-dialog";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { ViewOrderDialog } from "@/components/dialog/view-order-dialog";
 import { deleteOrder } from "@/client/services/order-service";
+import { ORDER_STATUS_LABEL } from "@/lib/constant";
 interface OrderTableProps {
   orders: Order[];
   loading?: boolean;
 }
 
-const handleDeleteOrder = (order: Order, onSuccess: () => void, onError: () => void) => {
+const handleDeleteOrder = (
+  order: Order,
+  onSuccess: () => void,
+  onError: () => void
+) => {
   deleteOrder(order, onSuccess, onError);
-}
+};
 
 export function OrderTable({ orders, loading = false }: OrderTableProps) {
   const [order, setOrder] = useAtom(orderState);
   const { openDialog } = useDialog();
-   
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -53,18 +58,16 @@ export function OrderTable({ orders, loading = false }: OrderTableProps) {
       },
     },
     {
-      field: "orderDate",
+      field: "createdAt",
       headerName: "Ngày đặt",
       headerClassName: "header-cell",
       resizable: false,
       filterable: false,
       flex: 1,
-      valueFormatter: (params: { value?: string }) => {
-        try {
-          return format(parseISO(params?.value || ""), "dd/MM/yyyy", { locale: vi });
-        } catch (error) {
-          return params?.value || "";
-        }
+      renderCell: (params) => {
+        return format(parseISO(params?.value || ""), "dd/MM/yyyy", {
+          locale: vi,
+        });
       },
     },
     {
@@ -75,7 +78,9 @@ export function OrderTable({ orders, loading = false }: OrderTableProps) {
       filterable: false,
       flex: 1,
       renderCell: (params) => {
-        return params.row?.status;
+        return ORDER_STATUS_LABEL[
+          params.row?.status as keyof typeof ORDER_STATUS_LABEL
+        ];
       },
     },
     {
@@ -113,14 +118,24 @@ export function OrderTable({ orders, loading = false }: OrderTableProps) {
             </IconButton>
             <IconButton
               onClick={() => {
-                openDialog(<DeleteOrderDialog onSubmit={() => {
-                  handleDeleteOrder(params.row, () => {
-                    setOrder(order.filter((item) => item.id !== params.row.id));
-                    toast.success("Xóa đơn hàng thành công");
-                  }, () => {
-                    toast.error("Xóa đơn hàng thất bại");
-                  }); 
-                }}  />);
+                openDialog(
+                  <DeleteOrderDialog
+                    onSubmit={() => {
+                      handleDeleteOrder(
+                        params.row,
+                        () => {
+                          setOrder(
+                            order.filter((item) => item.id !== params.row.id)
+                          );
+                          toast.success("Xóa đơn hàng thành công");
+                        },
+                        () => {
+                          toast.error("Xóa đơn hàng thất bại");
+                        }
+                      );
+                    }}
+                  />
+                );
               }}
             >
               <DeleteOutlineOutlinedIcon sx={{ color: "error.main" }} />

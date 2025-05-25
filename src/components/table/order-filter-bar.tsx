@@ -25,13 +25,21 @@ interface OrderFilterBarProps {
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const handleAddOrder = (data: OrderFormData, onSuccess: (res: Order) => void, onError: () => void) => {
-  createOrder({
-    customer: data.customer,
-    item: data.item,
-    totalAmount: data.totalAmount,
-    deliveryAddress: data.deliveryAddress,
-  }, onSuccess, onError);
+const handleAddOrder = (
+  data: OrderFormData,
+  onSuccess: (res: Order) => void,
+  onError: () => void
+) => {
+  createOrder(
+    {
+      customer: data.customer,
+      item: data.item,
+      totalAmount: data.totalAmount,
+      deliveryAddress: data.deliveryAddress,
+    },
+    onSuccess,
+    onError
+  );
 };
 
 export function OrderFilterBar({
@@ -54,26 +62,30 @@ export function OrderFilterBar({
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 2 }}>
-        <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-helper-label">Trạng thái</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={filters.status}
-          label="Trạng thái"
-          onChange={(e) =>
-            onFilterChange("status")(e as React.ChangeEvent<HTMLInputElement>)
-          }
-          size="medium"
-        >
-          <MenuItem value="">Tất cả</MenuItem>
-          {Object.entries(ORDER_STATUS_LABEL).map(([key, label]) => (
-            <MenuItem key={key} value={key}>
-              {label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-helper-label">
+              Trạng thái
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={filters.status}
+              label="Trạng thái"
+              onChange={(e) =>
+                onFilterChange("status")(
+                  e as React.ChangeEvent<HTMLInputElement>
+                )
+              }
+              size="medium"
+            >
+              <MenuItem value="">Tất cả</MenuItem>
+              {Object.entries(ORDER_STATUS_LABEL).map(([key, label]) => (
+                <MenuItem key={key} value={key}>
+                  {label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
         <Grid size={{ xs: 12, sm: 2 }}>
           <TextField
@@ -93,12 +105,16 @@ export function OrderFilterBar({
               openDialog(
                 <CreateOrderDialog
                   onSubmit={(data) => {
-                    handleAddOrder(data, (res) => {
-                      toast.success("Đơn hàng đã được thêm thành công");
-                      setOrder(prev => [...prev, res]);
-                    }, () => {
-                      toast.error("Có lỗi xảy ra khi thêm đơn hàng");
-                    });
+                    handleAddOrder(
+                      data,
+                      (res) => {
+                        toast.success("Đơn hàng đã được thêm thành công");
+                        setOrder((prev) => [...prev, res]);
+                      },
+                      () => {
+                        toast.error("Có lỗi xảy ra khi thêm đơn hàng");
+                      }
+                    );
                   }}
                   isLoading={false}
                   initialData={undefined}

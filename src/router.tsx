@@ -5,11 +5,16 @@ import CustomerPage from "./pages/CustomerPage";
 import OrderPage from "./pages/OrderPage";
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "@/components/protected-route";
+import PublicRoute from "@/components/public-route";
 
 export const router = createBrowserRouter([
   {
     path: "/login",
-    element: <LoginPage />,
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
   },
   {
     path: "*",
@@ -46,5 +51,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
 ]);

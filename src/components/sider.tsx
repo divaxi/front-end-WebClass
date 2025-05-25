@@ -4,8 +4,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Typography,
   useMediaQuery,
   useTheme,
+  Box,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -36,20 +38,6 @@ const DrawerContent = styled.div`
   height: 100vh;
   overflow: hidden;
 `;
-
-const Logo = styled.img`
-  width: 100%;
-  object-fit: contain;
-  object-position: center;
-  padding: 24px 0px 8px 24px;
-`;
-
-// const StyledListItem = styled(ListItem)`
-//   cursor: pointer;
-//   &:hover {
-//     background-color: rgba(230, 244, 255, 255);
-//   }
-// `;
 
 const AnimatedDrawer = styled(animated.div)`
   z-index: 20;
@@ -88,7 +76,20 @@ const Sider = ({ open, onClose, location }: SiderProps) => {
 
   const drawer = (
     <DrawerContent>
-      <AppIcon width={40} height={40} style={{ margin: "1rem" }} />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "start",
+          gap: 1,
+          p: 2,
+        }}
+      >
+        <AppIcon width={40} height={40} style={{ margin: "1rem" }} />
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          {import.meta.env.VITE_APP_NAME}
+        </Typography>
+      </Box>
       <List>
         {menuItems.map((item) => (
           <ListItem
@@ -130,7 +131,7 @@ const Sider = ({ open, onClose, location }: SiderProps) => {
           open={open}
           onClose={onClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile
+            keepMounted: true,
           }}
         >
           {drawer}

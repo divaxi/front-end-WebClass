@@ -74,7 +74,7 @@ export type EnumerateResponseDto = {
   total: number;
   data: Array<{
     revenue: number;
-    count:number
+    count: number;
     day?: string;
     month?: string;
     year?: string;

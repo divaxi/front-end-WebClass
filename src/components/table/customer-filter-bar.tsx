@@ -15,14 +15,22 @@ interface FilterBarProps {
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const handleAddCustomer = (data: CustomerFormData, onSuccess: (res: Customer) => void, onError: () => void) => {
-  createCustomer({
-    name: data.name,
-    phone: data.phone,
-    address: data.address,
-    note: data.note || undefined,
-    email: data.email,
-  }, onSuccess, onError);
+const handleAddCustomer = (
+  data: CustomerFormData,
+  onSuccess: (res: Customer) => void,
+  onError: () => void
+) => {
+  createCustomer(
+    {
+      name: data.name,
+      phone: data.phone,
+      address: data.address,
+      note: data.note || undefined,
+      email: data.email,
+    },
+    onSuccess,
+    onError
+  );
 };
 
 export const FilterBar = ({ filters, onFilterChange }: FilterBarProps) => {
@@ -67,14 +75,17 @@ export const FilterBar = ({ filters, onFilterChange }: FilterBarProps) => {
               openDialog(
                 <CreateCustomerDialog
                   onSubmit={(data) => {
-                    handleAddCustomer(data, (res) => {
-                      toast.success("Thêm khách hàng thành công");
-                      setCustomer(prev => [...prev, res]);
-                    }, () => {
-                      toast.error("Thêm khách hàng thất bại");
-                    });
+                    handleAddCustomer(
+                      data,
+                      (res) => {
+                        toast.success("Thêm khách hàng thành công");
+                        setCustomer((prev) => [...prev, res]);
+                      },
+                      () => {
+                        toast.error("Thêm khách hàng thất bại");
+                      }
+                    );
                   }}
-
                   title="Thêm khách hàng"
                 />
               )
@@ -88,4 +99,3 @@ export const FilterBar = ({ filters, onFilterChange }: FilterBarProps) => {
     </Box>
   );
 };
-

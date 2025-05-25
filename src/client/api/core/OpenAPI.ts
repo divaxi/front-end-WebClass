@@ -30,6 +30,7 @@ export type OpenAPIConfig = {
   HEADERS?: Headers | Resolver<Headers> | undefined;
   PASSWORD?: string | Resolver<string> | undefined;
   TOKEN?: string | Resolver<string> | undefined;
+  REFRESH_TOKEN?: string | Resolver<string> | undefined;
   USERNAME?: string | Resolver<string> | undefined;
   VERSION: string;
   WITH_CREDENTIALS: boolean;
@@ -46,6 +47,7 @@ export const OpenAPI: OpenAPIConfig = {
   HEADERS: undefined,
   PASSWORD: undefined,
   TOKEN: undefined,
+  REFRESH_TOKEN: undefined,
   USERNAME: undefined,
   VERSION: "1.0",
   WITH_CREDENTIALS: false,

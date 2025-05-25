@@ -41,9 +41,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Orderhistories"
-        ]
+        "tags": ["Orderhistories"]
       },
       "get": {
         "operationId": "OrderHistoriesController_findAll_v1",
@@ -98,9 +96,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Orderhistories"
-        ]
+        "tags": ["Orderhistories"]
       }
     },
     "/api/v1/order-histories/{id}": {
@@ -141,9 +137,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Orderhistories"
-        ]
+        "tags": ["Orderhistories"]
       }
     },
     "/api/v1/users": {
@@ -186,9 +180,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       },
       "get": {
         "operationId": "UsersController_findAll_v1",
@@ -251,9 +243,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     },
     "/api/v1/users/{id}": {
@@ -294,9 +284,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       },
       "patch": {
         "operationId": "UsersController_update_v1",
@@ -345,9 +333,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       },
       "delete": {
         "operationId": "UsersController_remove_v1",
@@ -379,9 +365,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     },
     "/api/v1/files/upload": {
@@ -430,9 +414,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Files"
-        ]
+        "tags": ["Files"]
       }
     },
     "/api/v1/orders": {
@@ -475,9 +457,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Orders"
-        ]
+        "tags": ["Orders"]
       },
       "get": {
         "operationId": "OrdersController_findAll_v1",
@@ -548,9 +528,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Orders"
-        ]
+        "tags": ["Orders"]
       }
     },
     "/api/v1/orders/{id}": {
@@ -591,9 +569,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Orders"
-        ]
+        "tags": ["Orders"]
       },
       "delete": {
         "operationId": "OrdersController_remove_v1",
@@ -625,9 +601,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Orders"
-        ]
+        "tags": ["Orders"]
       }
     },
     "/api/v1/customers": {
@@ -670,9 +644,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Customers"
-        ]
+        "tags": ["Customers"]
       },
       "get": {
         "operationId": "CustomersController_findAll_v1",
@@ -743,9 +715,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Customers"
-        ]
+        "tags": ["Customers"]
       }
     },
     "/api/v1/customers/{id}": {
@@ -786,9 +756,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Customers"
-        ]
+        "tags": ["Customers"]
       },
       "patch": {
         "operationId": "CustomersController_update_v1",
@@ -837,9 +805,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Customers"
-        ]
+        "tags": ["Customers"]
       },
       "delete": {
         "operationId": "CustomersController_remove_v1",
@@ -871,9 +837,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Customers"
-        ]
+        "tags": ["Customers"]
       }
     },
     "/api/v1/auth/email/login": {
@@ -911,9 +875,7 @@
             }
           }
         },
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/v1/auth/email/register": {
@@ -944,9 +906,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/v1/auth/me": {
@@ -979,9 +939,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       },
       "patch": {
         "operationId": "AuthController_update_v1",
@@ -1022,9 +980,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       },
       "delete": {
         "operationId": "AuthController_delete_v1",
@@ -1048,9 +1004,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/v1/auth/refresh": {
@@ -1083,9 +1037,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/v1/auth/logout": {
@@ -1111,9 +1063,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/": {
@@ -1134,9 +1084,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "Home"
-        ]
+        "tags": ["Home"]
       }
     },
     "/api/v1/satistic/count-order": {
@@ -1203,9 +1151,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Satistic"
-        ]
+        "tags": ["Satistic"]
       }
     },
     "/api/v1/satistic/total-revenue": {
@@ -1264,9 +1210,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Satistic"
-        ]
+        "tags": ["Satistic"]
       }
     },
     "/api/v1/satistic/total-order": {
@@ -1325,9 +1269,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Satistic"
-        ]
+        "tags": ["Satistic"]
       }
     },
     "/api/v1/satistic/total-order-each-status": {
@@ -1381,9 +1323,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Satistic"
-        ]
+        "tags": ["Satistic"]
       }
     },
     "/api/v1/satistic/total-user": {
@@ -1442,9 +1382,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Satistic"
-        ]
+        "tags": ["Satistic"]
       }
     }
   },
@@ -1473,9 +1411,7 @@
             "example": "userId"
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "OrderDto": {
         "type": "object",
@@ -1484,9 +1420,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "OrderStatusEnum": {
         "type": "string",
@@ -1523,11 +1457,7 @@
             ]
           }
         },
-        "required": [
-          "changeByUser",
-          "order",
-          "status"
-        ]
+        "required": ["changeByUser", "order", "status"]
       },
       "FileType": {
         "type": "object",
@@ -1541,10 +1471,7 @@
             "example": "https://example.com/path/to/file.jpg"
           }
         },
-        "required": [
-          "id",
-          "path"
-        ]
+        "required": ["id", "path"]
       },
       "Role": {
         "type": "object",
@@ -1557,10 +1484,7 @@
             "example": "admin"
           }
         },
-        "required": [
-          "id",
-          "name"
-        ]
+        "required": ["id", "name"]
       },
       "User": {
         "type": "object",
@@ -1673,11 +1597,7 @@
             "example": 50000
           }
         },
-        "required": [
-          "productName",
-          "quantity",
-          "unitPrice"
-        ]
+        "required": ["productName", "quantity", "unitPrice"]
       },
       "Order": {
         "type": "object",
@@ -1825,10 +1745,7 @@
             "example": true
           }
         },
-        "required": [
-          "data",
-          "hasNextPage"
-        ]
+        "required": ["data", "hasNextPage"]
       },
       "FileDto": {
         "type": "object",
@@ -1837,9 +1754,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "RoleDto": {
         "type": "object",
@@ -1848,9 +1763,7 @@
             "type": "object"
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "StatusDto": {
         "type": "object",
@@ -1859,9 +1772,7 @@
             "type": "object"
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "CreateUserDto": {
         "type": "object",
@@ -1891,12 +1802,7 @@
             "$ref": "#/components/schemas/StatusDto"
           }
         },
-        "required": [
-          "email",
-          "password",
-          "firstName",
-          "lastName"
-        ]
+        "required": ["email", "password", "firstName", "lastName"]
       },
       "InfinityPaginationUserResponseDto": {
         "type": "object",
@@ -1912,10 +1818,7 @@
             "example": true
           }
         },
-        "required": [
-          "data",
-          "hasNextPage"
-        ]
+        "required": ["data", "hasNextPage"]
       },
       "UpdateUserDto": {
         "type": "object",
@@ -1953,9 +1856,7 @@
             "$ref": "#/components/schemas/FileType"
           }
         },
-        "required": [
-          "file"
-        ]
+        "required": ["file"]
       },
       "CustomerDto": {
         "type": "object",
@@ -1964,9 +1865,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "CreateOrderDto": {
         "type": "object",
@@ -1987,12 +1886,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "customer",
-          "item",
-          "totalAmount",
-          "deliveryAddress"
-        ]
+        "required": ["customer", "item", "totalAmount", "deliveryAddress"]
       },
       "InfinityPaginationOrderResponseDto": {
         "type": "object",
@@ -2008,10 +1902,7 @@
             "example": true
           }
         },
-        "required": [
-          "data",
-          "hasNextPage"
-        ]
+        "required": ["data", "hasNextPage"]
       },
       "CreateCustomerDto": {
         "type": "object",
@@ -2032,11 +1923,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "address",
-          "phone",
-          "name"
-        ]
+        "required": ["address", "phone", "name"]
       },
       "InfinityPaginationCustomerResponseDto": {
         "type": "object",
@@ -2052,10 +1939,7 @@
             "example": true
           }
         },
-        "required": [
-          "data",
-          "hasNextPage"
-        ]
+        "required": ["data", "hasNextPage"]
       },
       "UpdateCustomerDto": {
         "type": "object",
@@ -2088,10 +1972,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "email",
-          "password"
-        ]
+        "required": ["email", "password"]
       },
       "LoginResponseDto": {
         "type": "object",
@@ -2109,12 +1990,7 @@
             "$ref": "#/components/schemas/User"
           }
         },
-        "required": [
-          "token",
-          "refreshToken",
-          "tokenExpires",
-          "user"
-        ]
+        "required": ["token", "refreshToken", "tokenExpires", "user"]
       },
       "AuthRegisterLoginDto": {
         "type": "object",
@@ -2135,12 +2011,7 @@
             "example": "Doe"
           }
         },
-        "required": [
-          "email",
-          "password",
-          "firstName",
-          "lastName"
-        ]
+        "required": ["email", "password", "firstName", "lastName"]
       },
       "RefreshResponseDto": {
         "type": "object",
@@ -2155,11 +2026,7 @@
             "type": "number"
           }
         },
-        "required": [
-          "token",
-          "refreshToken",
-          "tokenExpires"
-        ]
+        "required": ["token", "refreshToken", "tokenExpires"]
       },
       "AuthUpdateDto": {
         "type": "object",
@@ -2200,10 +2067,7 @@
             }
           }
         },
-        "required": [
-          "total",
-          "data"
-        ]
+        "required": ["total", "data"]
       },
       "TotalResponseDto": {
         "type": "object",
@@ -2215,10 +2079,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "total",
-          "status"
-        ]
+        "required": ["total", "status"]
       },
       "TotalOrderEachStatusResponseDto": {
         "type": "object",
@@ -2230,10 +2091,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "total",
-          "status"
-        ]
+        "required": ["total", "status"]
       }
     }
   }

@@ -6,7 +6,6 @@ import { useAtom } from "jotai";
 import { orderState } from "@/state";
 import type { OrdersControllerFindAllV1Data } from "@/client/api";
 import { useOrders } from "@/client/services/order-service";
-import { toast } from "react-toastify";
 
 export default function OrderPage() {
   const [filters, setFilters] = useState<OrdersControllerFindAllV1Data>({
@@ -19,7 +18,7 @@ export default function OrderPage() {
 
   const [orders, setOrders] = useAtom(orderState);
 
-  const { data, error, mutate } = useOrders({
+  const { data, mutate } = useOrders({
     customer: filters.customer,
     status: filters.status,
     code: filters.code,
@@ -28,11 +27,8 @@ export default function OrderPage() {
   });
 
   useEffect(() => {
-    if (error) {
-      toast.error("Lỗi khi tải dữ liệu đơn hàng");
-    }
     setOrders(data?.data || []);
-  }, [data, error, setOrders]);
+  }, [data, setOrders]);
 
   useEffect(() => {
     mutate();
@@ -50,7 +46,7 @@ export default function OrderPage() {
   return (
     <Paper sx={{ p: 2 }}>
       <OrderFilterBar filters={filters} onFilterChange={handleFilterChange} />
-      {/* <OrderTable orders={orders} /> */}
+      <OrderTable orders={orders} />
     </Paper>
   );
 }

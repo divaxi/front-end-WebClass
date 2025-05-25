@@ -188,7 +188,6 @@ export const CustomerTable = ({
       localeText={{
         noRowsLabel: "Không có dữ liệu",
       }}
-      
       sx={{
         overflowX: "auto",
         "& .header-cell": {

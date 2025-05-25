@@ -3,32 +3,27 @@ import Grid from "@mui/material/Grid";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PeopleIcon from "@mui/icons-material/People";
-import { useSatisticTotalCustomer, useSatisticTotalOrder } from "@/client/services/satistic";
+import {
+  useSatisticTotalCustomer,
+  useSatisticTotalOrder,
+} from "@/client/services/satistic";
 import { format } from "date-fns";
 import { useSatisticTotalRevenue } from "@/client/services/satistic";
 import { formatCurrency } from "@/lib/utils";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
 
 export default function TotalStatSection() {
-  const { data: totalOrder, error: errorOrder } = useSatisticTotalOrder({
+  const { data: totalOrder } = useSatisticTotalOrder({
     startDate: format(new Date(1970, 0, 1), "yyyy-MM-dd"),
     endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
   });
-  const { data: totalRevenue, error: errorRevenue } = useSatisticTotalRevenue({
+  const { data: totalRevenue } = useSatisticTotalRevenue({
     startDate: format(new Date(1970, 0, 1), "yyyy-MM-dd"),
     endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
   });
-  const { data: totalCustomer, error: errorCustomer } = useSatisticTotalCustomer({
+  const { data: totalCustomer } = useSatisticTotalCustomer({
     startDate: format(new Date(1970, 0, 1), "yyyy-MM-dd"),
     endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
   });
-
-  useEffect(() => {
-    if (errorOrder || errorRevenue || errorCustomer) {
-      toast.error("Lỗi khi tải dữ liệu thống kê");
-    }
-  }, [errorOrder, errorRevenue, errorCustomer]);
 
   return (
     <>

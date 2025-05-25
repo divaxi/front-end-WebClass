@@ -14,11 +14,11 @@ import { toast } from "react-toastify";
 import type { Customer, Order } from "@/client/api";
 import { useCustomers } from "@/client/services/customer-service";
 
-
-const customerOptionsTranform = (customers: Customer[]) => customers?.map((customer) => ({
-  value: customer.id,
-  displayName: `${customer.name} - ${customer.phone}`,
-}));
+const customerOptionsTranform = (customers: Customer[]) =>
+  customers?.map((customer) => ({
+    value: customer.id,
+    displayName: `${customer.name} - ${customer.phone}`,
+  }));
 
 const availableProducts = [
   { id: 1, name: "Sản phẩm 1", price: 100000 },
@@ -246,7 +246,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
           rules={{ required: "Vui lòng chọn khách hàng" }}
           setSubLocation={(option) => {
             setValue("customer", {
-              id: option.value.toString()
+              id: option.value.toString(),
             });
           }}
         />

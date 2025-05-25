@@ -5,7 +5,7 @@ import TotalStatSection from "@/components/total-stat-section";
 
 export default function DasboardPage() {
   return (
-    <Grid container spacing={2} size={{ md: 12, lg: 12 }}>
+    <Grid container spacing={2} size={{ md: 12, lg: 12 }} sx={{ py: 6 }}>
       <TotalStatSection />
       <PieChartSection />
       <LineChartSection />

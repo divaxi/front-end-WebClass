@@ -1,10 +1,9 @@
 import { Paper, Tab, Tabs, Box, Grid } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LineChart from "./chart/LineChart";
 import { useSatisticByTime } from "@/client/services/satistic";
 import { addDays, format, startOfWeek, startOfYear, subYears } from "date-fns";
 import type { SatisticControllerCountOrderByTimeV1Response } from "@/client/api";
-import { toast } from "react-toastify";
 import {
   placeholerDataForLineChartDayByDay,
   placeholerDataForLineChartMonthByMonth,
@@ -67,17 +66,11 @@ export default function LineChartSection() {
     "day"
   );
 
-  const { data: satisticStats, error: errorSatisticStats } = useSatisticByTime({
+  const { data: satisticStats } = useSatisticByTime({
     startDate,
     endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
     enumerateBy,
   });
-
-  useEffect(() => {
-    if (errorSatisticStats) {
-      toast.error("Lỗi khi tải dữ liệu thống kê");
-    }
-  }, [errorSatisticStats]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);

@@ -21,20 +21,13 @@ const mapper = (
 export default function PieChartSection() {
   const [tab, setTab] = useState(0);
   const [startDate, setStartDate] = useState(
-    format(startOfDay(new Date()), "yyyy-MM-dd")
+    format(startOfDay(startOfDay(new Date())), "yyyy-MM-dd'T'HH:mm:ss")
   );
 
-  const { data: totalOrderEachStatus, error: errorTotalOrderEachStatus } =
-    useSatisticTotalOrderEachStatus({
-      startDate,
-      endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
-    });
-
-  useEffect(() => {
-    if (errorTotalOrderEachStatus) {
-      toast.error("Lỗi khi tải dữ liệu thống kê");
-    }
-  }, [errorTotalOrderEachStatus]);
+  const { data: totalOrderEachStatus } = useSatisticTotalOrderEachStatus({
+    startDate,
+    endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
+  });
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
@@ -42,17 +35,20 @@ export default function PieChartSection() {
 
     switch (newValue) {
       case 0:
-        newStartDate = format(startOfDay(new Date()), "yyyy-MM-dd");
+        newStartDate = format(startOfDay(new Date()), "yyyy-MM-dd'T'HH:mm:ss");
         break;
       case 1:
         newStartDate = format(
           startOfWeek(new Date(), { weekStartsOn: 1 }),
-          "yyyy-MM-dd"
+          "yyyy-MM-dd'T'HH:mm:ss"
         );
 
         break;
       case 2:
-        newStartDate = format(startOfMonth(new Date()), "yyyy-MM-dd");
+        newStartDate = format(
+          startOfMonth(new Date()),
+          "yyyy-MM-dd'T'HH:mm:ss"
+        );
         break;
     }
     setStartDate(newStartDate);

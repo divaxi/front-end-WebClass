@@ -32,7 +32,6 @@ const UserSection = styled.div`
   align-items: center;
 `;
 
-
 interface HeaderProps {
   onMenuClick: () => void;
 }
@@ -41,7 +40,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [auth, setAuth] = useAtom(authState);
-  const navigate = useNavigate();   
+  const navigate = useNavigate();
   return (
     <AppBar position="fixed">
       <StyledToolbar>
@@ -57,17 +56,21 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         )}
         <FlexSpacer />
         <UserSection>
-          <AvatarMenu userName={auth?.user.lastName || ""} userRole={auth?.user.role.name || "" } onLogout={() => {logout(
-            () => {
-              toast.success("Đăng xuất thành công");
-              setAuth(null);
-              navigate("/login");
-            },
-            () => {
-              toast.error("Đăng xuất thất bại");
-              }
-          )}
-        } 
+          <AvatarMenu
+            userName={auth?.user.lastName || ""}
+            userRole={auth?.user.role.id || ""}
+            onLogout={() => {
+              logout(
+                () => {
+                  toast.success("Đăng xuất thành công");
+                  setAuth(null);
+                  navigate("/login");
+                },
+                () => {
+                  toast.error("Đăng xuất thất bại");
+                }
+              );
+            }}
           />
         </UserSection>
       </StyledToolbar>

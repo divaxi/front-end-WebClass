@@ -59,6 +59,38 @@ const Title = styled(Typography)`
   }
 `;
 
+const CompanyName = styled(Title)`
+  background: linear-gradient(45deg, #ff1493, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: glow 2s ease-in-out infinite alternate;
+  text-shadow: 0 0 10px rgba(248, 91, 175, 0.3);
+
+  @keyframes glow {
+    from {
+      text-shadow:
+        0 0 10px rgba(247, 94, 175, 0.3),
+        0 0 20px rgba(255, 20, 147, 0.3),
+        0 0 30px rgba(255, 20, 147, 0.3);
+    }
+    to {
+      text-shadow:
+        0 0 20px rgba(255, 165, 0, 0.5),
+        0 0 30px rgba(255, 165, 0, 0.5),
+        0 0 40px rgba(255, 165, 0, 0.5);
+    }
+  }
+
+  @media (min-width: 900px) {
+    font-size: 4.5rem;
+  }
+`;
+
 const Subtitle = styled(Typography)`
   font-size: 1.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -109,8 +141,6 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const setAuthState = useSetAtom(authState);
 
-
-
   return (
     <PageContainer>
       <ContentWrapper>
@@ -118,10 +148,13 @@ export default function LoginPage() {
           <Title variant="h2" fontWeight="bold" gutterBottom>
             Chào mừng đến với
           </Title>
+          <CompanyName variant="h2" gutterBottom>
+            {import.meta.env.VITE_APP_NAME}
+          </CompanyName>
           <Subtitle variant="h3" fontWeight="bold" gutterBottom>
             Hệ thống quản lý đơn hàng
           </Subtitle>
-          <Description variant="body1">
+          <Description variant="h5">
             Giải pháp toàn diện cho việc quản lý và theo dõi đơn hàng của bạn.
             Tối ưu hóa quy trình, tăng hiệu suất và mang lại trải nghiệm tốt
             nhất cho khách hàng.
@@ -150,12 +183,14 @@ export default function LoginPage() {
               isLoading={isLoading}
               onSubmit={(data) => {
                 setIsLoading(true);
-                loginWithEmail({
-                  requestBody: {
-                    email: data.email,
-                    password: data.password,
+                loginWithEmail(
+                  {
+                    requestBody: {
+                      email: data.email,
+                      password: data.password,
+                    },
                   },
-                }, (res) => {
+                  (res) => {
                     toast.success("Đăng nhập thành công");
                     setAuthState(res);
                     navigate("/");

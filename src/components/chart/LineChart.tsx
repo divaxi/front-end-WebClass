@@ -12,13 +12,14 @@ interface LineChartProps {
   color?: string;
 }
 
-
-export default function LineChart({ data, labelsLegend, color }: LineChartProps) {
+export default function LineChart({
+  data,
+  labelsLegend,
+  color,
+}: LineChartProps) {
   if (!data || data.length === 0) {
     return <div>Không có dữ liệu để hiển thị</div>;
   }
-
-
 
   if (Object.keys(data[0]).length - 1 !== labelsLegend.length) {
     throw new Error(
