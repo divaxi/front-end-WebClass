@@ -182,10 +182,12 @@ const OrderForm: React.FC<OrderFormProps> = ({
   isLoading = false,
   initialData,
 }) => {
+  const [searchName, setSearchName] = React.useState("");
+
   const { data } = useCustomers({
     page: 1,
     limit: 10,
-    name: "",
+    name: searchName,
   });
 
   const {
@@ -209,6 +211,8 @@ const OrderForm: React.FC<OrderFormProps> = ({
   const items = watch("item");
   const quantities = items.map((item) => item.quantity);
   const unitPrices = items.map((item) => item.unitPrice);
+
+
 
   React.useEffect(() => {
     const total = items.reduce(
@@ -249,6 +253,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
               id: option.value.toString(),
             });
           }}
+          onInputChange={(value) => setSearchName(value)}
         />
 
         <OrderItemList

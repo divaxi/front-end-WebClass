@@ -17,7 +17,7 @@ export default function CustomerPage() {
 
   const [customers, setCustomers] = useAtom(customerState);
 
-  const { data, mutate } = useCustomers({
+  const { data } = useCustomers({
     limit: filters.limit,
     page: filters.page,
     name: filters.name,
@@ -28,10 +28,6 @@ export default function CustomerPage() {
   useEffect(() => {
     setCustomers(data?.data || []);
   }, [data, setCustomers]);
-
-  useEffect(() => {
-    mutate();
-  }, [filters, mutate]);
 
   const handleFilterChange =
     (field: keyof typeof filters) =>

@@ -63,9 +63,14 @@ export const deleteCustomer = async (
   }
 };
 
-export const useCustomers = (query: CustomersControllerFindAllV1Data) => {
-  const { data, error, isLoading, mutate } = useSWR("customers", () =>
-    fetchCustomers(query)
+export const useCustomers = ({
+  page,
+  limit,
+  name,
+}: CustomersControllerFindAllV1Data) => {
+  const { data, error, isLoading, mutate } = useSWR(
+    ["customers", page, limit, name],
+    () => fetchCustomers({ page, limit, name })
   );
   return {
     data,

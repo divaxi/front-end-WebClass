@@ -27,6 +27,7 @@ interface SelectFieldProps<T extends FieldValues> {
   loading?: boolean;
   options: Option[];
   setSubLocation?: (value: Option) => void;
+  onInputChange?: (value: string) => void;
 }
 
 const SelectField = <T extends FieldValues>({
@@ -39,6 +40,7 @@ const SelectField = <T extends FieldValues>({
   disabled,
   loading,
   setSubLocation,
+  onInputChange,
 }: SelectFieldProps<T>) => {
   if (!control || !setValue) {
     console.error(
@@ -81,6 +83,11 @@ const SelectField = <T extends FieldValues>({
               setValue(name, newValue as any);
               if (setSubLocation && newValue) {
                 setSubLocation(newValue);
+              }
+            }}
+            onInputChange={(_, value) => {
+              if (onInputChange) {
+                onInputChange(value);
               }
             }}
             renderInput={(params) => (
